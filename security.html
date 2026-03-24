@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Security &amp; Compliance — A production-grade security framework for federal data science platforms. CAC/PIV authentication, multi-classification data handling, RBAC, compliance automation, and tamper-proof audit trails.">
+  <title>Security &amp; Compliance — Federal DS Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/prism-theme.css">
+  <!-- UX-021: Theme init in <head> to prevent flash of wrong theme -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+<!-- UX-011: Skip-to-content link -->
+<a href="#main-content" class="skip-to-content sr-only">Skip to main content</a>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+  <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <a href="index.html" class="nav-brand" aria-label="Home">
+    <img src="assets/favicon.svg" class="nav-brand-icon" alt="" aria-hidden="true" width="28" height="28">
+    <span class="nav-brand-text">
+      <span class="nav-brand-title">Federal</span>
+      <span class="nav-brand-subtitle">Data Science Handbook</span>
+    </span>
+  </a>
+
+  <div class="nav-spacer"></div>
+
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chapters/01-introduction.html">Chapters</a></li>
+    <li><a href="index.html#platforms">Platforms</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button class="btn-icon" id="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-icon nav-github" aria-label="View on GitHub" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+    </a>
+    <!-- UX-016: aria-live region for theme toggle announcements -->
+    <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" role="complementary" aria-label="Navigation">
+  <!-- UX-007: Home link for mobile navigation -->
+  <div class="sidebar-section">
+    <span class="sidebar-label">Navigation</span>
+    <nav aria-label="Site navigation"><ul class="sidebar-nav" role="list">
+      <li><a href="index.html">Home</a></li>
+    </ul></nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Chapters</span>
+    <nav aria-label="Chapters"><ul class="sidebar-nav" role="list">
+      <li><a href="chapters/01-introduction.html"><span class="chapter-num">01</span> Introduction</a></li>
+      <li><a href="chapters/02-python-r-foundations.html"><span class="chapter-num">02</span> Python &amp; R</a></li>
+      <li><a href="chapters/03-data-acquisition.html"><span class="chapter-num">03</span> Data Acquisition</a></li>
+      <li><a href="chapters/09-mlops.html"><span class="chapter-num">09</span> MLOps</a></li>
+      <li><a href="chapters/11-deployment.html"><span class="chapter-num">11</span> Deployment</a></li>
+      <li><a href="chapters/12-ethics-governance.html"><span class="chapter-num">12</span> Ethics</a></li>
+      <li><a href="index.html#chapters" style="font-size:var(--text-xs);color:var(--text-muted);padding-top:0.25rem">View all 13 chapters &rarr;</a></li>
+    </ul></nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Platform Guides</span>
+    <nav aria-label="Platform guides"><ul class="sidebar-nav" role="list">
+      <li><a href="platforms/advana.html"><span class="platform-dot" style="background:#C5A572"></span> Advana</a></li>
+      <li><a href="platforms/databricks.html"><span class="platform-dot" style="background:#FF3621"></span> Databricks</a></li>
+      <li><a href="platforms/qlik.html"><span class="platform-dot" style="background:#009845"></span> Qlik</a></li>
+      <li><a href="platforms/navy-jupiter.html"><span class="platform-dot" style="background:#003B5C"></span> Navy Jupiter</a></li>
+      <li><a href="platforms/palantir.html"><span class="platform-dot" style="background:#1B2A4A"></span> Palantir AIP/Foundry</a></li>
+    </ul></nav>
+  </div>
+</aside>
+
+<div class="page-wrapper">
+  <main class="main-content" id="main-content">
+
+    <div class="platform-hero" style="--platform-color: #1B2A4A">
+      <div class="platform-eyebrow">
+        <span class="platform-dot-large" aria-hidden="true"></span>
+        Reference Implementation
+      </div>
+      <h1 class="platform-hero-title">Security &amp; Compliance</h1>
+      <p class="platform-hero-desc">A production-grade security framework for federal data science platforms. 309 files implementing CAC/PIV authentication, multi-classification data handling, RBAC, automated compliance documentation, and tamper-proof audit trails.</p>
+      <div class="platform-tags">
+        <span class="platform-tag-pill">NIST 800-53</span>
+        <span class="platform-tag-pill">FedRAMP</span>
+        <span class="platform-tag-pill">FISMA</span>
+        <span class="platform-tag-pill">DoD 8500</span>
+        <span class="platform-tag-pill">FIPS 140-2</span>
+      </div>
+    </div>
+
+    <div class="security-stats-bar">
+      <div class="security-stat">
+        <span class="security-stat-value">309</span>
+        <span class="security-stat-label">Files</span>
+      </div>
+      <div class="security-stat">
+        <span class="security-stat-value">249K</span>
+        <span class="security-stat-label">Lines</span>
+      </div>
+      <div class="security-stat">
+        <span class="security-stat-value">6</span>
+        <span class="security-stat-label">Modules</span>
+      </div>
+      <div class="security-stat">
+        <span class="security-stat-value">14</span>
+        <span class="security-stat-label">Subdirectories</span>
+      </div>
+      <div class="security-stat">
+        <span class="security-stat-value">5</span>
+        <span class="security-stat-label">Standards</span>
+      </div>
+    </div>
+
+    <div class="chapter-layout">
+      <article class="chapter-main">
+        <div class="prose" id="prose-content">
+
+          <h2 id="core-modules">Six Core Modules</h2>
+          <p>The security-compliance directory is organized into six self-contained modules. Each one implements a specific domain of federal security requirements with production-ready code, configuration, and tests.</p>
+
+          <div class="security-module-grid">
+
+            <div class="security-module-card">
+              <h3>Multi-Classification Framework</h3>
+              <p>Bell-LaPadula enforcement across NIPR, SIPR, and JWICS networks. ML-based content classification at &lt;50ms latency with intelligent caching and real-time data spillage detection. Cross-domain guard simulation for development environments.</p>
+              <span class="module-stat">35ms avg &middot; 98.5% SLA &middot; 87% cache hit rate</span>
+            </div>
+
+            <div class="security-module-card">
+              <h3>CAC/PIV + OAuth 2.0 Authentication</h3>
+              <p>Chained smart card authentication to OAuth PKCE across Advana, Databricks, Qlik, and Navy Jupiter. PKCS#11 middleware abstraction supporting ActivClient, OpenSC, CoolKey, and CACKey. AES-256-GCM token encryption at rest.</p>
+              <span class="module-stat">84 files &middot; 4 platform adapters</span>
+            </div>
+
+            <div class="security-module-card">
+              <h3>RBAC + ABAC Access Control</h3>
+              <p>Combined MAC, DAC, RBAC, and ABAC with DENY-first logic. PostgreSQL-backed with &lt;100ms decisions at 1,000+ authorizations per second. JSON policy language for attribute-based rules with emergency access override procedures.</p>
+              <span class="module-stat">&lt;100ms decisions &middot; 1000+ authz/sec</span>
+            </div>
+
+            <div class="security-module-card">
+              <h3>Automated Compliance Documentation</h3>
+              <p>Generates System Security Plans (SSP), Security Assessment Reports (SAR), and Risk Assessment Reports (RAR) from live system data. Jinja2 templating with multi-format output: HTML, PDF, DOCX, and Markdown.</p>
+              <span class="module-stat">NIST 800-53 &middot; FISMA &middot; DoD 8500.01E</span>
+            </div>
+
+            <div class="security-module-card">
+              <h3>Tamper-Proof Audit System</h3>
+              <p>Blockchain-inspired hash chaining with SHA-256, Merkle tree verification, and RSA-4096 digital signatures. WORM-compliant storage with 7-year retention. MITRE ATT&amp;CK framework integration for threat detection.</p>
+              <span class="module-stat">100K events/sec &middot; 7-year retention</span>
+            </div>
+
+            <div class="security-module-card">
+              <h3>Security Testing Pipeline</h3>
+              <p>SAST across 8 languages, DAST for web applications and APIs. CVSS 3.1 + EPSS vulnerability scoring with CI/CD quality gates and automated remediation planning.</p>
+              <span class="module-stat">8 languages &middot; CVSS 3.1 + EPSS</span>
+            </div>
+
+          </div>
+
+          <h2 id="standards-compliance">Standards Compliance</h2>
+          <p>Each module maps directly to one or more federal security standards. The table below shows which standards each module implements.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>NIST 800-53</th>
+                <th>FedRAMP</th>
+                <th>FISMA</th>
+                <th>DoD 8500</th>
+                <th>STIG</th>
+                <th>FIPS 140-2</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Multi-Classification</td>
+                <td>AC-3, AC-4</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td>CAC/PIV + OAuth</td>
+                <td>IA-2, IA-5</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+              </tr>
+              <tr>
+                <td>RBAC + ABAC</td>
+                <td>AC-2, AC-6</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td>Compliance Docs</td>
+                <td>CA-2, CA-7</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td>Audit System</td>
+                <td>AU-2, AU-12</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+              </tr>
+              <tr>
+                <td>Security Testing</td>
+                <td>SA-11, RA-5</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&#10003;</td>
+                <td>&mdash;</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 id="how-it-connects">How It Connects</h2>
+          <p>The six modules form a pipeline. A user authenticates via CAC/PIV, receives an encrypted OAuth token, and every subsequent request passes through RBAC/ABAC authorization. Data access is gated by the multi-classification framework, and every decision is recorded in the tamper-proof audit trail.</p>
+
+          <div class="mermaid-wrapper">
+            <div class="mermaid">
+graph LR
+    A["CAC/PIV Auth"] --> B["Token Manager"]
+    B --> C["RBAC / ABAC"]
+    C --> D["Multi-Classification"]
+    D --> E["Audit Trail"]
+    E --> F["Compliance Reports"]
+            </div>
+            <p class="mermaid-caption">End-to-end security pipeline. Authentication feeds authorization, which gates classified data access. Every decision is audited and feeds compliance reporting.</p>
+          </div>
+
+          <h2 id="explore-the-code">Explore the Code</h2>
+
+          <div class="benchmark-callout">
+            <p><strong>Performance benchmarks:</strong> Classification at 35ms average (50ms SLA), RBAC decisions under 100ms at 1,000+ authorizations per second, audit ingestion at 100,000 events per second with sub-50ms write latency. All figures from the validation suites included in each module.</p>
+          </div>
+
+          <p>The full implementation is open source. Each module includes its own README, configuration examples, test suites, and deployment instructions.</p>
+
+          <a href="https://github.com/aporb/data-science-learning-handbook/tree/main/security-compliance" class="btn-primary" target="_blank" rel="noopener">
+            Explore on GitHub &rarr;
+          </a>
+
+        </div>
+      </article>
+
+      <nav class="chapter-toc" aria-label="On this page">
+        <span class="toc-label">On this page</span>
+        <ul class="toc-list" id="toc-list" role="list"></ul>
+      </nav>
+    </div>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-brand">Federal Data Science<br>Handbook</p>
+          <p class="footer-tagline">Open reference. No registration.</p>
+        </div>
+        <div>
+          <p class="footer-col-title">Platforms</p>
+          <ul class="footer-links" role="list">
+            <li><a href="platforms/advana.html">Advana</a></li>
+            <li><a href="platforms/databricks.html">Databricks</a></li>
+            <li><a href="platforms/qlik.html">Qlik</a></li>
+            <li><a href="platforms/navy-jupiter.html">Navy Jupiter</a></li>
+            <li><a href="platforms/palantir.html">Palantir</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Related Chapters</p>
+          <ul class="footer-links" role="list">
+            <li><a href="chapters/09-mlops.html">09 &mdash; MLOps</a></li>
+            <li><a href="chapters/11-deployment.html">11 &mdash; Deployment</a></li>
+            <li><a href="chapters/12-ethics-governance.html">12 &mdash; Ethics &amp; Governance</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">MIT (code) &middot; CC BY 4.0 (content) &middot; <a href="https://github.com/aporb/data-science-learning-handbook" style="color:rgba(255,255,255,0.6)">GitHub</a></span>
+        <div class="footer-platform-dots" aria-hidden="true">
+          <span class="footer-dot" style="background:#C5A572"></span>
+          <span class="footer-dot" style="background:#FF3621"></span>
+          <span class="footer-dot" style="background:#009845"></span>
+          <span class="footer-dot" style="background:#003B5C"></span>
+          <span class="footer-dot" style="background:#4A6FA5"></span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+<script src="js/mermaid-init.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"
+  integrity="sha512-hpZ5pDCF2bRCweL5WoA0/N1elet1NPMokenOoo9DQVL/ScN773UmE8xBkUWQrz8+I8cqAliNEJkBTK2O4ymrw=="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"
+  integrity="sha512-AKaNmg8COK0zEbjTdMHJAPJ0z6VeNqvRvH4/d5M4sHJbQQUToMBtodq4HaV4fa+WV2UTfoperEws9Pi97ZJNQ=="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"
+  integrity="sha512-35RBtvuCKWANuRid6RXP2gYm4D5RMieVL/xbp6KiMXlIqgNrI7XRUh9HurE8lKHW4aRpC0TZU3ZfqG8qmQ3Dg=="
+  crossorigin="anonymous" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

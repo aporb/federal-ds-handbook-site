@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Local Docker Stack — Federal Data Science Handbook. A Docker Compose environment mirroring federal platform constraints: Jupyter, MLflow, PostgreSQL, CAC/PIV auth, and more.">
+  <title>Local Docker Stack — Federal DS Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <!-- UX-021: Theme init in <head> to prevent flash of wrong theme -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/prism-theme.css">
+</head>
+<body>
+
+<!-- UX-011: Skip-to-content link -->
+<a href="#main-content" class="skip-to-content sr-only">Skip to main content</a>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+  <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <a href="index.html" class="nav-brand" aria-label="Home">
+    <img src="assets/favicon.svg" class="nav-brand-icon" alt="" aria-hidden="true" width="28" height="28">
+    <span class="nav-brand-text">
+      <span class="nav-brand-title">Federal</span>
+      <span class="nav-brand-subtitle">Data Science Handbook</span>
+    </span>
+  </a>
+
+  <div class="nav-spacer"></div>
+
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chapters/01-introduction.html">Chapters</a></li>
+    <li><a href="index.html#platforms">Platforms</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button class="btn-icon" id="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-icon nav-github" aria-label="View on GitHub" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+    </a>
+    <!-- UX-016: aria-live region for theme toggle announcements -->
+    <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" role="complementary" aria-label="Navigation">
+  <!-- UX-007: Home link for mobile navigation -->
+  <div class="sidebar-section">
+    <span class="sidebar-label">Navigation</span>
+    <nav aria-label="Site navigation"><ul class="sidebar-nav" role="list">
+      <li><a href="index.html">Home</a></li>
+    </ul></nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Chapters</span>
+    <nav aria-label="Chapters">
+      <ul class="sidebar-nav" role="list">
+        <li><a href="chapters/01-introduction.html"><span class="chapter-num">01</span> Introduction</a></li>
+        <li><a href="chapters/02-python-r-foundations.html"><span class="chapter-num">02</span> Python &amp; R</a></li>
+        <li><a href="chapters/09-mlops.html"><span class="chapter-num">09</span> MLOps</a></li>
+        <li><a href="chapters/11-deployment.html"><span class="chapter-num">11</span> Deployment</a></li>
+        <li><a href="index.html#chapters" style="font-size:var(--text-xs);color:var(--text-muted);padding-top:0.25rem">View all 13 chapters &rarr;</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Platform Guides</span>
+    <nav aria-label="Platform guides">
+      <ul class="sidebar-nav" role="list">
+        <li><a href="platforms/advana.html"><span class="platform-dot" style="background:#C5A572"></span> Advana</a></li>
+        <li><a href="platforms/databricks.html"><span class="platform-dot" style="background:#FF3621"></span> Databricks</a></li>
+        <li><a href="platforms/qlik.html"><span class="platform-dot" style="background:#009845"></span> Qlik</a></li>
+        <li><a href="platforms/navy-jupiter.html"><span class="platform-dot" style="background:#003B5C"></span> Navy Jupiter</a></li>
+        <li><a href="platforms/palantir.html"><span class="platform-dot" style="background:#1B2A4A"></span> Palantir AIP/Foundry</a></li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+
+<div class="page-wrapper">
+  <main class="main-content" id="main-content">
+
+    <div class="platform-hero" style="--platform-color: #003B5C">
+      <div class="platform-eyebrow">
+        <span style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.5);display:inline-block" aria-hidden="true"></span>
+        Development Environment
+      </div>
+      <h1 class="platform-hero-title">Local Docker Stack</h1>
+      <p class="platform-hero-desc">A Docker Compose environment that mirrors federal platform constraints locally. Jupyter, MLflow, PostgreSQL, and CAC/PIV authentication services — the tools you need to run handbook code examples in conditions that approximate real DoD platforms.</p>
+      <div class="platform-tags">
+        <span class="platform-tag-pill">Docker Compose</span>
+        <span class="platform-tag-pill">IL4/IL5 Simulation</span>
+        <span class="platform-tag-pill">8 Services</span>
+      </div>
+    </div>
+
+    <!-- UX-018: dl/dt/dd for semantic label-value pairs -->
+    <dl class="platform-facts">
+      <div class="platform-fact"><dt class="platform-fact-label">Services</dt><dd class="platform-fact-value">8</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Dockerfiles</dt><dd class="platform-fact-value">8</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Requires</dt><dd class="platform-fact-value">Docker 20.10+</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">RAM</dt><dd class="platform-fact-value">8 GB minimum</dd></div>
+    </dl>
+
+    <div class="chapter-layout">
+      <article class="chapter-main">
+        <div class="prose" id="prose-content">
+
+          <h2 id="services">Services</h2>
+          <p>The stack ships eight services. Each runs in its own container with a dedicated Dockerfile. Together they approximate the compute, storage, tracking, monitoring, and auth surfaces you encounter on Advana, Databricks, and Navy Jupiter.</p>
+
+          <div class="docker-service-grid">
+
+            <div class="docker-service-card">
+              <div class="service-name">Jupyter</div>
+              <div class="service-desc">JupyterLab notebooks — the primary interface for running chapter code examples and exercises</div>
+              <div class="service-port">Port 8888</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">MLflow</div>
+              <div class="service-desc">Experiment tracking and model registry, backed by PostgreSQL — mirrors the MLflow server on Databricks</div>
+              <div class="service-port">Port 5000</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">PostgreSQL</div>
+              <div class="service-desc">Relational database for data exercises and as the MLflow backend store</div>
+              <div class="service-port">Port 5432</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Redis</div>
+              <div class="service-desc">In-memory cache and message broker for pipeline and streaming exercises</div>
+              <div class="service-port">Port 6379</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Nginx</div>
+              <div class="service-desc">Reverse proxy with SSL termination — routes traffic to Jupyter and MLflow, simulates gateway behavior</div>
+              <div class="service-port">Port 80 / 443</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Prometheus</div>
+              <div class="service-desc">Metrics collection for all running services — used in Chapter 9 (MLOps) monitoring examples</div>
+              <div class="service-port">Port 9090</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Grafana</div>
+              <div class="service-desc">Monitoring dashboards fed by Prometheus — pre-provisioned with handbook dashboard configs</div>
+              <div class="service-port">Port 3000</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">CAC Auth</div>
+              <div class="service-desc">Smart card authentication simulator — lets you test CAC/PIV auth flows without hardware readers</div>
+              <div class="service-port">Port 8443</div>
+            </div>
+
+          </div>
+
+          <h2 id="quick-start">Quick Start</h2>
+          <p>Three commands get the full stack running. If you only need Jupyter and MLflow for a specific chapter, see <a href="#selective-startup">Selective Startup</a> below.</p>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span class="code-block-lang">bash</span>
+              <button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-bash"># Clone the repository
+git clone https://github.com/aporb/data-science-learning-handbook.git
+cd data-science-learning-handbook
+
+# Copy environment template and configure
+cp .env.example .env
+
+# Start all services
+docker compose up -d
+
+# Verify
+docker compose ps</code></pre>
+          </div>
+
+          <p>JupyterLab will be available at <code>http://localhost:8888</code>. MLflow at <code>http://localhost:5000</code>. The first startup pulls images and builds containers — allow 3–5 minutes.</p>
+
+          <h2 id="configuration">Configuration</h2>
+          <p>Copy <code>.env.example</code> to <code>.env</code> before starting the stack. The file is pre-populated with safe defaults for local development; you only need to change values if you want to connect to live federal platform APIs.</p>
+
+          <p>The four variable groups in <code>.env</code>:</p>
+          <ul>
+            <li><strong>Database credentials</strong> — PostgreSQL user, password, and database name. MLflow uses these to connect to its backend store.</li>
+            <li><strong>MLflow settings</strong> — Artifact storage path and tracking URI. Defaults to local filesystem under <code>mlartifacts/</code>.</li>
+            <li><strong>Platform API keys</strong> — Optional Databricks tokens and Qlik API keys. Required only for platform-specific exercises that hit live APIs.</li>
+            <li><strong>CAC/PIV certificate paths</strong> — Paths to your test certificates for the auth service simulator. Leave blank to use the bundled test certs.</li>
+          </ul>
+
+          <p>See <code>env-example.txt</code> in the repo root for a fully commented reference of every available variable.</p>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>Nginx sits at the edge and routes inbound requests. Jupyter and MLflow are the primary workload services. Prometheus scrapes metrics from all services; Grafana reads from Prometheus. CAC Auth connects through Nginx for auth-gated endpoints.</p>
+
+          <div class="mermaid-wrapper">
+            <div class="mermaid">
+graph LR
+  A[Jupyter :8888] --> B[MLflow :5000]
+  A --> C[PostgreSQL :5432]
+  A --> D[Redis :6379]
+  B --> C
+  E[Nginx :80/443] --> A
+  E --> B
+  F[Prometheus :9090] --> A
+  F --> B
+  F --> C
+  G[Grafana :3000] --> F
+  H[CAC Auth :8443] --> E
+            </div>
+            <p class="mermaid-caption">Service topology. Nginx is the single ingress point. Prometheus scrapes all services; Grafana visualizes the metrics. CAC Auth chains through Nginx for auth-gated request flows.</p>
+          </div>
+
+          <h2 id="selective-startup">Selective Startup</h2>
+          <p>The full stack uses 6–8 GB of RAM. If you are working through a specific chapter and don't need monitoring or auth services, start only what that chapter requires.</p>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span class="code-block-lang">bash</span>
+              <button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-bash"># Just the essentials for chapter exercises
+docker compose up -d jupyter mlflow postgres
+
+# Add monitoring for Chapter 9 (MLOps)
+docker compose up -d prometheus grafana
+
+# Add auth services for Chapter 12 (Ethics & Governance)
+docker compose up -d cac-auth nginx</code></pre>
+          </div>
+
+          <div class="callout callout-note">
+            <span class="callout-icon" aria-hidden="true">&#8505;</span>
+            <div class="callout-content">
+              <p>MLflow depends on PostgreSQL. If you start MLflow, Docker Compose will automatically start postgres too — you don't need to name it explicitly.</p>
+            </div>
+          </div>
+
+          <h2 id="get-the-full-stack">Get the Full Stack</h2>
+          <p>All Dockerfiles, Nginx configs, Prometheus rules, Grafana dashboard provisioning, and the CAC Auth service source are in the <code>docker/</code> directory of the repository.</p>
+
+          <a href="https://github.com/aporb/data-science-learning-handbook/tree/main/docker" class="btn-primary" target="_blank" rel="noopener">
+            View Docker Configuration on GitHub &rarr;
+          </a>
+
+        </div><!-- /prose -->
+
+        <nav class="chapter-nav-footer" aria-label="Page navigation">
+          <a href="index.html" class="chapter-nav-link prev">
+            <span class="chapter-nav-direction">Back to</span>
+            <span class="chapter-nav-title">Home</span>
+          </a>
+          <a href="platforms/databricks.html" class="chapter-nav-link next">
+            <span class="chapter-nav-direction">Platform Guide</span>
+            <span class="chapter-nav-title">Databricks</span>
+          </a>
+        </nav>
+
+      </article>
+
+      <nav class="chapter-toc" aria-label="On this page">
+        <span class="toc-label">On this page</span>
+        <ul class="toc-list" id="toc-list" role="list"></ul>
+      </nav>
+
+    </div><!-- /chapter-layout -->
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-brand">Federal Data Science<br>Handbook</p>
+          <p class="footer-tagline">Open reference. No registration.</p>
+        </div>
+        <div>
+          <p class="footer-col-title">Platforms</p>
+          <ul class="footer-links" role="list">
+            <li><a href="platforms/advana.html">Advana</a></li>
+            <li><a href="platforms/databricks.html">Databricks</a></li>
+            <li><a href="platforms/qlik.html">Qlik</a></li>
+            <li><a href="platforms/navy-jupiter.html">Navy Jupiter</a></li>
+            <li><a href="platforms/palantir.html">Palantir</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Related Chapters</p>
+          <ul class="footer-links" role="list">
+            <li><a href="chapters/02-python-r-foundations.html">02 — Python &amp; R</a></li>
+            <li><a href="chapters/09-mlops.html">09 — MLOps</a></li>
+            <li><a href="chapters/11-deployment.html">11 — Deployment</a></li>
+            <li><a href="chapters/12-ethics-governance.html">12 — Ethics</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">MIT (code) &middot; CC BY 4.0 (content) &middot; <a href="https://github.com/aporb/data-science-learning-handbook" style="color:rgba(255,255,255,0.6)">GitHub</a></span>
+        <div class="footer-platform-dots" aria-hidden="true">
+          <span class="footer-dot" style="background:#C5A572"></span>
+          <span class="footer-dot" style="background:#FF3621"></span>
+          <span class="footer-dot" style="background:#009845"></span>
+          <span class="footer-dot" style="background:#003B5C"></span>
+          <span class="footer-dot" style="background:#4A6FA5"></span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+<script src="js/mermaid-init.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"
+  integrity="sha512-hpZ5pDCF2bRCweL5WoA0/N1elet1NPMokenOoo9DQVL/ScN773UmE8xBkUWQrz8+I8cqAliNEJkBTK2O4ymrw=="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"
+  integrity="sha512-35RBtvuCKWANuRid6RXP2gYm4D5RMieVL/xbp6KiMXlIqgNrI7XRUh9HurE8lKHW4aRpC0TZU3ZfqG8qmQ3Dg=="
+  crossorigin="anonymous" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
