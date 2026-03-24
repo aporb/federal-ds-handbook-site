@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A practical, platform-specific guide to data science in the federal government. Covers Advana, Databricks, Qlik, Navy Jupiter, and Palantir AIP/Foundry.">
-  <title>Federal Data Science Learning Handbook</title>
+  <title>Federal Data Science Handbook</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
   <!-- UX-021: Theme init runs before first paint to prevent flash of wrong theme -->
@@ -66,6 +66,9 @@
         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
+    <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-icon nav-github" aria-label="View on GitHub" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
   </div>
   <!-- UX-016: aria-live region announces theme changes to screen readers -->
   <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
@@ -103,6 +106,16 @@
         <li><a href="chapters/11-deployment.html"><span class="chapter-num">11</span> Deployment</a></li>
         <li><a href="chapters/12-ethics-governance.html"><span class="chapter-num">12</span> Ethics &amp; Governance</a></li>
         <li><a href="chapters/13-advanced-topics.html"><span class="chapter-num">13</span> Advanced Topics</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Resources</span>
+    <nav aria-label="Resources">
+      <ul class="sidebar-nav" role="list">
+        <li><a href="docker.html">Docker Environment</a></li>
+        <li><a href="security.html">Security Reference</a></li>
       </ul>
     </nav>
   </div>
@@ -160,7 +173,7 @@
       </p>
       <h1 class="hero-title" id="hero-title">
         Federal Data Science
-        <em>Learning Handbook</em>
+        <em>Handbook</em>
       </h1>
       <p class="hero-description">
         A practical, platform-specific guide to data science in the federal government. Built for practitioners who need to ship real work on real DoD platforms — not academic exercises in ideal conditions.
@@ -200,6 +213,7 @@
           </svg>
         </a>
         <a href="#chapters" class="btn-secondary">Browse Chapters</a>
+        <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
       </div>
     </section>
 
@@ -238,7 +252,7 @@
           <span class="chapter-card-title">Introduction to Data Science in Government</span>
           <span class="chapter-card-desc">The five platforms, Impact Levels, FedRAMP, Zero Trust — and why access is your first technical problem, not security's.</span>
           <span class="chapter-card-meta">
-            Advana · Jupiter · Databricks · Qlik · Palantir
+            Advana · Jupiter · Databricks · Qlik · Palantir · <strong>5 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -251,7 +265,7 @@
           <span class="chapter-card-title">Python and R Foundations for Federal Platforms</span>
           <span class="chapter-card-desc">Writing code that works inside managed environments. Package approval workflows, air-gapped PyPI, Databricks Runtime versioning, and CAC-based authentication patterns.</span>
           <span class="chapter-card-meta">
-            Databricks · Palantir Foundry · Jupiter
+            Databricks · Palantir Foundry · Jupiter · <strong>5 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -264,7 +278,7 @@
           <span class="chapter-card-title">Data Acquisition in the Federal Ecosystem</span>
           <span class="chapter-card-desc">Working with Collibra catalogs, bronze/silver/gold data tiers, CUI handling, and the data steward relationships that determine what you can actually use.</span>
           <span class="chapter-card-meta">
-            Collibra · Advana · Jupiter
+            Collibra · Advana · Jupiter · <strong>6 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -277,7 +291,7 @@
           <span class="chapter-card-title">Data Wrangling at Scale</span>
           <span class="chapter-card-desc">PySpark transforms for DoD-scale logistics and financial data. Delta Lake, Unity Catalog, cleaning legacy system outputs, and writing audit-compliant pipelines.</span>
           <span class="chapter-card-meta">
-            Databricks · PySpark · Delta Lake
+            Databricks · PySpark · Delta Lake · <strong>4 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -290,7 +304,7 @@
           <span class="chapter-card-title">Exploratory Data Analysis</span>
           <span class="chapter-card-desc">EDA patterns for federal datasets. Profiling, anomaly detection, documenting findings for data stewards, and building the evidence base that justifies model development.</span>
           <span class="chapter-card-meta">
-            Python · Databricks · Qlik
+            Python · Databricks · Qlik · <strong>6 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -303,7 +317,7 @@
           <span class="chapter-card-title">Supervised Machine Learning</span>
           <span class="chapter-card-desc">Building predictive models on Databricks with MLflow tracking. Classification, regression, ensemble methods, SHAP explainability for command briefings.</span>
           <span class="chapter-card-meta">
-            Databricks · MLflow · scikit-learn
+            Databricks · MLflow · scikit-learn · <strong>5 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -316,7 +330,7 @@
           <span class="chapter-card-title">Unsupervised Machine Learning</span>
           <span class="chapter-card-desc">Clustering, anomaly detection, dimensionality reduction. Practical applications in maintenance forecasting, logistics anomaly detection, and personnel analytics.</span>
           <span class="chapter-card-meta">
-            Python · Databricks
+            Python · Databricks · <strong>5 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -329,7 +343,7 @@
           <span class="chapter-card-title">Deep Learning and Neural Networks</span>
           <span class="chapter-card-desc">Deep learning in government-approved compute environments. Working within GPU access constraints, compliance-friendly model storage, and approved framework versions.</span>
           <span class="chapter-card-meta">
-            Databricks · PyTorch · Mosaic AI
+            Databricks · PyTorch · Mosaic AI · <strong>4 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -342,7 +356,7 @@
           <span class="chapter-card-title">MLOps in the Federal Environment</span>
           <span class="chapter-card-desc">MLflow, Unity Catalog model registry, CI/CD on GitLab in GovCloud, ATO requirements for production models, and monitoring deployed models in production.</span>
           <span class="chapter-card-meta">
-            MLflow · GitLab · Databricks
+            MLflow · GitLab · Databricks · <strong>6 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -355,7 +369,7 @@
           <span class="chapter-card-title">Data Visualization and Dashboards</span>
           <span class="chapter-card-desc">Building Qlik dashboards that flag officers actually use. The QIX Engine, Server-Side Extensions for ML integration, and the design patterns that survive the O-6 brief.</span>
           <span class="chapter-card-meta">
-            Qlik · SSE · Python
+            Qlik · SSE · Python · <strong>6 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -368,7 +382,7 @@
           <span class="chapter-card-title">Deploying Models to Production</span>
           <span class="chapter-card-desc">Getting a model to production in a DoD environment. ATO requirements, security scans, approval chains, and what changes once a model is live and used for decisions.</span>
           <span class="chapter-card-meta">
-            Databricks · Palantir · Qlik SSE
+            Databricks · Palantir · Qlik SSE · <strong>6 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -381,7 +395,7 @@
           <span class="chapter-card-title">Ethics and AI Governance</span>
           <span class="chapter-card-desc">AI ethics in the DoD context. Responsible AI principles, bias in military datasets, the Directive 3000.09 framework for autonomous systems, and documenting model limitations.</span>
           <span class="chapter-card-meta">
-            Policy · RAI · Compliance
+            Policy · RAI · Compliance · <strong>5 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -394,7 +408,7 @@
           <span class="chapter-card-title">Advanced Topics and Emerging Capabilities</span>
           <span class="chapter-card-desc">Large language models in the federal context, Palantir AIP agents, multi-source data fusion, and what the Maven Smart System tells us about the operational edge of military AI.</span>
           <span class="chapter-card-meta">
-            Palantir AIP · LLMs · Agent Studio
+            Palantir AIP · LLMs · Agent Studio · <strong>6 exercises</strong>
             <svg class="chapter-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -483,6 +497,45 @@
       </div>
     </section>
 
+    <!-- THE FULL TOOLKIT -->
+    <section class="section" id="toolkit" aria-labelledby="toolkit-heading">
+      <div class="section-header">
+        <span class="section-eyebrow">Beyond the Chapters</span>
+        <h2 class="section-title" id="toolkit-heading">The Full Toolkit</h2>
+        <p class="section-description">The handbook repository includes everything you need to learn, practice, and build in a federal data science environment.</p>
+      </div>
+
+      <div class="toolkit-grid">
+        <a href="https://github.com/aporb/data-science-learning-handbook/tree/main/chapters" class="toolkit-card" target="_blank" rel="noopener">
+          <div class="toolkit-card-icon">&#128187;</div>
+          <div class="toolkit-card-title">67 Exercises</div>
+          <div class="toolkit-card-desc">Hands-on problems with full solutions for every chapter — coding challenges, analysis tasks, and scenario-based problems grounded in federal data.</div>
+          <div class="toolkit-card-stat">13 exercise sets</div>
+        </a>
+
+        <a href="docker.html" class="toolkit-card">
+          <div class="toolkit-card-icon">&#128230;</div>
+          <div class="toolkit-card-title">Docker Environment</div>
+          <div class="toolkit-card-desc">A local development stack that mirrors federal platform constraints — Jupyter, MLflow, PostgreSQL, CAC/PIV auth, and monitoring services.</div>
+          <div class="toolkit-card-stat">8 services</div>
+        </a>
+
+        <a href="security.html" class="toolkit-card">
+          <div class="toolkit-card-icon">&#128274;</div>
+          <div class="toolkit-card-title">Security Reference</div>
+          <div class="toolkit-card-desc">A 309-file DoD security implementation — CAC/PIV authentication, RBAC, multi-classification data handling, and automated compliance documentation.</div>
+          <div class="toolkit-card-stat">249K lines</div>
+        </a>
+
+        <a href="https://github.com/aporb/data-science-learning-handbook/tree/main/chapters" class="toolkit-card" target="_blank" rel="noopener">
+          <div class="toolkit-card-icon">&#128013;</div>
+          <div class="toolkit-card-title">41 Python Files</div>
+          <div class="toolkit-card-desc">Working code examples for every chapter — written to run on the platforms they describe, not on a local machine with unconstrained internet.</div>
+          <div class="toolkit-card-stat">5 platforms covered</div>
+        </a>
+      </div>
+    </section>
+
     <!-- WHO THIS IS FOR -->
     <section class="section" id="about" aria-labelledby="about-heading">
       <div class="section-header">
@@ -507,7 +560,7 @@
     <footer class="site-footer" role="contentinfo">
       <div class="footer-grid">
         <div>
-          <p class="footer-brand">Federal Data Science<br>Learning Handbook</p>
+          <p class="footer-brand">Federal Data Science<br>Handbook</p>
           <p class="footer-tagline">A practical guide to data science in the federal government. Open reference. No registration.</p>
         </div>
         <div>
@@ -530,9 +583,17 @@
             <li><a href="platforms/palantir.html">Palantir AIP/Foundry</a></li>
           </ul>
         </div>
+        <div>
+          <p class="footer-col-title">Resources</p>
+          <ul class="footer-links" role="list">
+            <li><a href="docker.html">Docker Environment</a></li>
+            <li><a href="security.html">Security Reference</a></li>
+            <li><a href="https://github.com/aporb/data-science-learning-handbook" target="_blank" rel="noopener">GitHub Repository</a></li>
+          </ul>
+        </div>
       </div>
       <div class="footer-bottom">
-        <span class="footer-copy">Federal Data Science Learning Handbook &mdash; Open Reference</span>
+        <span class="footer-copy">MIT (code) &middot; CC BY 4.0 (content) &middot; <a href="https://github.com/aporb/data-science-learning-handbook" style="color:rgba(255,255,255,0.6)">GitHub</a></span>
         <div class="footer-platform-dots" aria-label="Platform palette">
           <span class="footer-dot" style="background:#C5A572" aria-hidden="true"></span>
           <span class="footer-dot" style="background:#FF3621" aria-hidden="true"></span>
