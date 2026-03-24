@@ -3,231 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{{PLATFORM_NAME}} Platform Guide — Federal Data Science Learning Handbook">
+  <meta name="description" content="{{PLATFORM_NAME}} Platform Guide — Federal Data Science Handbook">
   <title>{{PLATFORM_NAME}} Guide — Federal DS Handbook</title>
+  <!-- UX-021: Theme init in <head> to prevent flash of wrong theme -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/prism-theme.css">
-
-  <style>
-    /* =====================================================
-       Platform guide specific styles
-       ===================================================== */
-
-    .platform-hero {
-      /* Set --platform-color to the platform's brand color in the inline style */
-      background: var(--platform-color, #1B2A4A);
-      color: white;
-      padding: 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .platform-hero::before {
-      content: '';
-      position: absolute;
-      top: -40%;
-      right: -10%;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-      pointer-events: none;
-    }
-
-    .platform-eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 1rem;
-    }
-
-    .platform-eyebrow .platform-dot-large {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.5);
-    }
-
-    .platform-hero-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-      color: white;
-    }
-
-    .platform-hero-desc {
-      font-size: 1.125rem;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.75);
-      max-width: 56ch;
-      margin-bottom: 2rem;
-    }
-
-    .platform-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .platform-tag-pill {
-      display: inline-block;
-      padding: 0.3rem 0.75rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 100px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.9);
-    }
-
-    /* Platform quick facts bar */
-    .platform-facts {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      border-bottom: 1px solid var(--border-light);
-      background: var(--bg-secondary);
-    }
-
-    .platform-fact {
-      padding: 1.25rem 1.5rem;
-      border-right: 1px solid var(--border-light);
-    }
-
-    .platform-fact:last-child {
-      border-right: none;
-    }
-
-    .platform-fact-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    .platform-fact-value {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    /* API Reference card */
-    .api-card {
-      border: 1px solid var(--border-light);
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 1.5rem 0;
-    }
-
-    .api-card-header {
-      padding: 0.75rem 1.25rem;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-light);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .api-method {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-    }
-
-    .method-get { background: rgba(0,152,69,0.12); color: #007A38; }
-    .method-post { background: rgba(255,54,33,0.12); color: #CC2D1C; }
-    .method-put { background: rgba(197,165,114,0.2); color: #8B6914; }
-
-    .api-path {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
-    .api-card-body {
-      padding: 1rem 1.25rem;
-    }
-
-    .api-card-desc {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      margin-bottom: 0;
-    }
-
-    /* Resource links grid */
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 0.75rem;
-      margin: 1.5rem 0;
-    }
-
-    .resource-link {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      padding: 0.875rem 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      transition: all var(--transition-fast);
-    }
-
-    .resource-link:hover {
-      border-color: var(--border-medium);
-      box-shadow: var(--shadow-sm);
-      color: var(--text-link);
-    }
-
-    .resource-link-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 900px) {
-      .platform-hero {
-        padding: 2.5rem 1.5rem;
-      }
-
-      .platform-facts {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .platform-fact {
-        border-right: none;
-        border-bottom: 1px solid var(--border-light);
-      }
-    }
-  </style>
 </head>
 <body>
+
+<!-- UX-011: Skip-to-content link -->
+<a href="#main-content" class="skip-to-content sr-only">Skip to main content</a>
 
 <!-- TOP NAVIGATION -->
 <nav class="site-nav" role="navigation" aria-label="Main navigation">
@@ -252,7 +46,7 @@
   <ul class="nav-links" role="list">
     <li><a href="../index.html">Home</a></li>
     <li><a href="../chapters/01-introduction.html">Chapters</a></li>
-    <li><a href="template.html" class="active">Platforms</a></li>
+    <li><a href="../index.html#platforms" class="active">Platforms</a></li>
   </ul>
 
   <div class="nav-actions">
@@ -272,6 +66,13 @@
         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
+    <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-icon" aria-label="View on GitHub" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+    </a>
+    <!-- UX-016: aria-live region for theme toggle announcements -->
+    <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
   </div>
 </nav>
 
@@ -279,6 +80,14 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar" role="complementary" aria-label="Navigation">
+  <!-- UX-007: Home link for mobile navigation -->
+  <div class="sidebar-section">
+    <span class="sidebar-label">Navigation</span>
+    <nav aria-label="Site navigation"><ul class="sidebar-nav" role="list">
+      <li><a href="../index.html">Home</a></li>
+    </ul></nav>
+  </div>
+
   <div class="sidebar-section">
     <span class="sidebar-label">Platform Guides</span>
     <nav aria-label="Platform guides">
@@ -293,9 +102,10 @@
     </nav>
   </div>
 
+  <!-- UX-029: Labeled "Related Chapters" with link to all chapters -->
   <div class="sidebar-section">
-    <span class="sidebar-label">Chapters</span>
-    <nav aria-label="Chapter list">
+    <span class="sidebar-label">Related Chapters</span>
+    <nav aria-label="Related chapters">
       <ul class="sidebar-nav" role="list">
         <li><a href="../chapters/01-introduction.html"><span class="chapter-num">01</span> Introduction</a></li>
         <li><a href="../chapters/02-python-r-foundations.html"><span class="chapter-num">02</span> Python &amp; R</a></li>
@@ -303,6 +113,7 @@
         <li><a href="../chapters/04-data-wrangling.html"><span class="chapter-num">04</span> Data Wrangling</a></li>
         <li><a href="../chapters/09-mlops.html"><span class="chapter-num">09</span> MLOps</a></li>
         <li><a href="../chapters/12-ethics-governance.html"><span class="chapter-num">12</span> Ethics</a></li>
+        <li><a href="../index.html#chapters" style="font-size:var(--text-xs);color:var(--text-muted);padding-top:0.25rem">View all 13 chapters &rarr;</a></li>
       </ul>
     </nav>
   </div>
@@ -337,33 +148,15 @@
       </div>
     </div>
 
-    <!-- QUICK FACTS BAR -->
-    <div class="platform-facts" role="list">
-      <div class="platform-fact" role="listitem">
-        <span class="platform-fact-label">Authorization</span>
-        <span class="platform-fact-value">{{AUTH_LEVEL}}</span>
-      </div>
-      <div class="platform-fact" role="listitem">
-        <span class="platform-fact-label">Networks</span>
-        <span class="platform-fact-value">{{NETWORKS}}</span>
-      </div>
-      <div class="platform-fact" role="listitem">
-        <span class="platform-fact-label">Managed By</span>
-        <span class="platform-fact-value">{{MANAGED_BY}}</span>
-      </div>
-      <div class="platform-fact" role="listitem">
-        <span class="platform-fact-label">Access</span>
-        <span class="platform-fact-value">{{ACCESS_METHOD}}</span>
-      </div>
-      <div class="platform-fact" role="listitem">
-        <span class="platform-fact-label">PII/PHI</span>
-        <span class="platform-fact-value">{{PII_PHI}}</span>
-      </div>
-      <div class="platform-fact" role="listitem">
-        <span class="platform-fact-label">Users</span>
-        <span class="platform-fact-value">{{USER_SCALE}}</span>
-      </div>
-    </div>
+    <!-- UX-018: Converted to dl/dt/dd for semantic label-value pairs -->
+    <dl class="platform-facts">
+      <div class="platform-fact"><dt class="platform-fact-label">Authorization</dt><dd class="platform-fact-value">{{AUTH_LEVEL}}</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Networks</dt><dd class="platform-fact-value">{{NETWORKS}}</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Managed By</dt><dd class="platform-fact-value">{{MANAGED_BY}}</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Access</dt><dd class="platform-fact-value">{{ACCESS_METHOD}}</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">PII/PHI</dt><dd class="platform-fact-value">{{PII_PHI}}</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Users</dt><dd class="platform-fact-value">{{USER_SCALE}}</dd></div>
+    </dl>
 
     <!-- CHAPTER LAYOUT (reuse for platform pages) -->
     <div class="chapter-layout">
@@ -492,7 +285,7 @@ client = PlatformClient(
     <footer class="site-footer" role="contentinfo">
       <div class="footer-grid">
         <div>
-          <p class="footer-brand">Federal Data Science<br>Learning Handbook</p>
+          <p class="footer-brand">Federal Data Science<br>Handbook</p>
           <p class="footer-tagline">A practical guide to data science in the federal government.</p>
         </div>
         <div>
@@ -516,7 +309,7 @@ client = PlatformClient(
         </div>
       </div>
       <div class="footer-bottom">
-        <span class="footer-copy">Federal Data Science Learning Handbook &mdash; Open Reference</span>
+        <span class="footer-copy">MIT (code) &middot; CC BY 4.0 (content) &middot; <a href="https://github.com/aporb/data-science-learning-handbook" style="color:rgba(255,255,255,0.6)">GitHub</a></span>
         <div class="footer-platform-dots" aria-hidden="true">
           <span class="footer-dot" style="background:#C5A572"></span>
           <span class="footer-dot" style="background:#FF3621"></span>
@@ -531,12 +324,12 @@ client = PlatformClient(
 </div>
 
 <!-- External Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script src="../js/mermaid-init.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
-<script src="../js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+<script src="../js/mermaid-init.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js" defer></script>
+<script src="../js/main.js" defer></script>
 </body>
 </html>
