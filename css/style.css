@@ -928,19 +928,20 @@ img {
 
 .chapter-layout {
   display: grid;
-  grid-template-columns: 1fr minmax(0, var(--content-max)) 280px;
+  grid-template-columns: 1fr 280px;
   gap: 0;
   min-height: calc(100vh - var(--nav-height));
 }
 
 .chapter-main {
-  grid-column: 2;
+  grid-column: 1;
   padding: 3rem 2rem 6rem;
   min-width: 0;
+  max-width: var(--content-max);
 }
 
 .chapter-toc {
-  grid-column: 3;
+  grid-column: 2;
   position: sticky;
   top: calc(var(--nav-height) + 2rem);
   height: fit-content;
@@ -1641,17 +1642,15 @@ a.chapter-meta-link:hover {
 
 @media (max-width: 1200px) {
   .chapter-layout {
-    grid-template-columns: 1fr minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .chapter-toc {
     display: none;
   }
 
-  /* UX-006: Center the prose column when TOC is hidden to prevent orphaned whitespace */
   .chapter-main {
-    max-width: 72ch;
-    margin: 0 auto;
+    max-width: var(--content-max);
   }
 }
 
