@@ -229,6 +229,68 @@ img {
   background: rgba(197,165,114,0.12);
 }
 
+/* ======================================================
+   NAV DROPDOWN
+   ====================================================== */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-dropdown-toggle::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  margin-top: 2px;
+}
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 0.5rem 0;
+  z-index: 100;
+  margin-top: 0.5rem;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  display: block;
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background 0.15s ease;
+}
+
+.nav-dropdown-menu a:hover {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .nav-dropdown-menu {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
 .nav-actions {
   display: flex;
   align-items: center;
@@ -1893,7 +1955,6 @@ img {
   background: var(--platform-color, #1B2A4A);
   color: #fff;
   padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
-  margin-left: var(--sidebar-width, 260px);
   position: relative;
   overflow: hidden;
 }
@@ -1964,7 +2025,6 @@ img {
 .platform-facts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  margin-left: var(--sidebar-width, 260px);
   background: var(--bg-card);
   border-bottom: 1px solid var(--border-light);
 }
@@ -2002,11 +2062,7 @@ img {
 }
 
 @media (max-width: 900px) {
-  .platform-hero {
-    margin-left: 0;
-  }
   .platform-facts {
-    margin-left: 0;
     grid-template-columns: repeat(2, 1fr);
   }
 }
