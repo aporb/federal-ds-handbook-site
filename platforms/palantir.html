@@ -6,25 +6,14 @@
   <meta name="description" content="Palantir AIP/Foundry Platform Guide — Ontology-grounded AI, AIP Logic, Agent Studio, palantir_models, FedRAMP High/IL4/IL5/IL6, Maven Smart System, and the $10B Army Enterprise Agreement.">
   <title>Palantir AIP/Foundry Guide — Federal DS Handbook</title>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <!-- UX-021: Theme init in <head> to prevent flash of wrong theme -->
+  <script>(function(){var s=localStorage.getItem('theme');var p=window.matchMedia('(prefers-color-scheme:dark)').matches;var t=s||(p?'dark':'light');document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/prism-theme.css">
-  <style>
-    .platform-hero { background: #1B2A4A; color: white; padding: 4rem; position: relative; overflow: hidden; }
-    .platform-hero::before { content: ''; position: absolute; top: -40%; right: -10%; width: 500px; height: 500px; border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none; }
-    .platform-eyebrow { display: flex; align-items: center; gap: 0.625rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.65); margin-bottom: 1rem; }
-    .platform-hero-title { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1rem; color: white; }
-    .platform-hero-desc { font-size: 1.125rem; line-height: 1.7; color: rgba(255,255,255,0.8); max-width: 56ch; margin-bottom: 2rem; }
-    .platform-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .platform-tag-pill { display: inline-block; padding: 0.3rem 0.75rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; border-radius: 100px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.95); }
-    .platform-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); border-bottom: 1px solid var(--border-light); background: var(--bg-secondary); }
-    .platform-fact { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border-light); }
-    .platform-fact:last-child { border-right: none; }
-    .platform-fact-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); display: block; margin-bottom: 0.3rem; }
-    .platform-fact-value { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
-    @media (max-width: 900px) { .platform-hero { padding: 2.5rem 1.5rem; } .platform-facts { grid-template-columns: 1fr 1fr; } .platform-fact { border-right: none; border-bottom: 1px solid var(--border-light); } }
-  </style>
 </head>
 <body>
+<!-- UX-011: Skip-to-content link -->
+<a href="#main-content" class="skip-to-content sr-only">Skip to main content</a>
 <nav class="site-nav" role="navigation" aria-label="Main navigation">
   <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -44,10 +33,22 @@
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     </button>
+    <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-icon nav-github" aria-label="View on GitHub" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+    <!-- UX-016: aria-live region for theme toggle announcements -->
+    <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
   </div>
 </nav>
 <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
 <aside class="sidebar" id="sidebar" role="complementary" aria-label="Navigation">
+  <!-- UX-007: Home link for mobile navigation -->
+  <div class="sidebar-section">
+    <span class="sidebar-label">Navigation</span>
+    <nav aria-label="Site navigation"><ul class="sidebar-nav" role="list">
+      <li><a href="../index.html">Home</a></li>
+    </ul></nav>
+  </div>
   <div class="sidebar-section">
     <span class="sidebar-label">Platform Guides</span>
     <nav aria-label="Platform guides"><ul class="sidebar-nav" role="list">
@@ -58,20 +59,22 @@
       <li><a href="palantir.html" class="active"><span class="platform-dot" style="background:#1B2A4A"></span> Palantir AIP/Foundry</a></li>
     </ul></nav>
   </div>
+  <!-- UX-029: Labeled "Related Chapters" with link to all chapters -->
   <div class="sidebar-section">
-    <span class="sidebar-label">Chapters</span>
-    <nav aria-label="Chapter list"><ul class="sidebar-nav" role="list">
+    <span class="sidebar-label">Related Chapters</span>
+    <nav aria-label="Related chapters"><ul class="sidebar-nav" role="list">
       <li><a href="../chapters/01-introduction.html"><span class="chapter-num">01</span> Introduction</a></li>
       <li><a href="../chapters/09-mlops.html"><span class="chapter-num">09</span> MLOps</a></li>
       <li><a href="../chapters/13-advanced-topics.html"><span class="chapter-num">13</span> GenAI</a></li>
+      <li><a href="../index.html#chapters" style="font-size:var(--text-xs);color:var(--text-muted);padding-top:0.25rem">View all 13 chapters &rarr;</a></li>
     </ul></nav>
   </div>
 </aside>
 <div class="page-wrapper">
   <main class="main-content" id="main-content">
 
-    <div class="platform-hero">
-      <div class="platform-eyebrow"><span style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.5);display:inline-block" aria-hidden="true"></span> Platform Guide</div>
+    <div class="platform-hero" style="--platform-color: #1B2A4A">
+      <div class="platform-eyebrow"><span class="platform-dot-large" aria-hidden="true"></span> Platform Guide</div>
       <h1 class="platform-hero-title">Palantir AIP / Foundry</h1>
       <p class="platform-hero-desc">The enterprise data integration and operational AI platform — Ontology-grounded LLMs via AIP Logic, model-agnostic k-LLM architecture, FedRAMP High through IL6, the $10B Army Enterprise Agreement, and Maven Smart System as a Pentagon Program of Record.</p>
       <div class="platform-tags">
@@ -83,14 +86,15 @@
       </div>
     </div>
 
-    <div class="platform-facts" role="list">
-      <div class="platform-fact" role="listitem"><span class="platform-fact-label">Authorization</span><span class="platform-fact-value">FedRAMP High (Dec 2024)</span></div>
-      <div class="platform-fact" role="listitem"><span class="platform-fact-label">DoD IL</span><span class="platform-fact-value">IL4, IL5, IL6</span></div>
-      <div class="platform-fact" role="listitem"><span class="platform-fact-label">Army Contract</span><span class="platform-fact-value">$10B / 10-year (Jul 2025)</span></div>
-      <div class="platform-fact" role="listitem"><span class="platform-fact-label">FedStart Includes</span><span class="platform-fact-value">Claude (Apr 2025)</span></div>
-      <div class="platform-fact" role="listitem"><span class="platform-fact-label">Maven Status</span><span class="platform-fact-value">Pentagon POR (Mar 2026)</span></div>
-      <div class="platform-fact" role="listitem"><span class="platform-fact-label">Library</span><span class="platform-fact-value">palantir_models (not foundry_ml)</span></div>
-    </div>
+    <!-- UX-018: Converted to dl/dt/dd for semantic label-value pairs -->
+    <dl class="platform-facts">
+      <div class="platform-fact"><dt class="platform-fact-label">Authorization</dt><dd class="platform-fact-value">FedRAMP High (Dec 2024)</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">DoD IL</dt><dd class="platform-fact-value">IL4, IL5, IL6</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Army Contract</dt><dd class="platform-fact-value">$10B / 10-year (Jul 2025)</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">FedStart Includes</dt><dd class="platform-fact-value">Claude (Apr 2025)</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Maven Status</dt><dd class="platform-fact-value">Pentagon POR (Mar 2026)</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Library</dt><dd class="platform-fact-value">palantir_models (not foundry_ml)</dd></div>
+    </dl>
 
     <div class="chapter-layout">
       <article class="chapter-main">
@@ -366,22 +370,22 @@ flowchart TD
 
     <footer class="site-footer" role="contentinfo">
       <div class="footer-grid">
-        <div><p class="footer-brand">Federal Data Science<br>Learning Handbook</p><p class="footer-tagline">Open reference. No registration.</p></div>
+        <div><p class="footer-brand">Federal Data Science<br>Handbook</p><p class="footer-tagline">Open reference. No registration.</p></div>
         <div><p class="footer-col-title">Chapters</p><ul class="footer-links" role="list"><li><a href="../chapters/01-introduction.html">01 — Introduction</a></li><li><a href="../chapters/09-mlops.html">09 — MLOps</a></li><li><a href="../chapters/13-advanced-topics.html">13 — GenAI</a></li></ul></div>
         <div><p class="footer-col-title">Platforms</p><ul class="footer-links" role="list"><li><a href="advana.html">Advana</a></li><li><a href="databricks.html">Databricks</a></li><li><a href="qlik.html">Qlik</a></li><li><a href="navy-jupiter.html">Navy Jupiter</a></li><li><a href="palantir.html">Palantir</a></li></ul></div>
       </div>
       <div class="footer-bottom">
-        <span class="footer-copy">Federal Data Science Learning Handbook &mdash; Open Reference</span>
+        <span class="footer-copy">MIT (code) &middot; CC BY 4.0 (content) &middot; <a href="https://github.com/aporb/data-science-learning-handbook" style="color:rgba(255,255,255,0.6)">GitHub</a></span>
         <div class="footer-platform-dots" aria-hidden="true"><span class="footer-dot" style="background:#C5A572"></span><span class="footer-dot" style="background:#FF3621"></span><span class="footer-dot" style="background:#009845"></span><span class="footer-dot" style="background:#003B5C"></span><span class="footer-dot" style="background:#4A6FA5"></span></div>
       </div>
     </footer>
   </main>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script src="../js/mermaid-init.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+<script src="../js/mermaid-init.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" defer></script>
+<script src="../js/main.js" defer></script>
 </body>
 </html>
