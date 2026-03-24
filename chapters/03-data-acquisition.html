@@ -158,7 +158,7 @@ graph TD
           <p>A substantial amount of useful federal data is publicly available via APIs that require no clearance — only an API key or no authentication at all. These are the starting points for procurement analysis, budget research, demographic work, and economic analysis.</p>
 
           <h3 id="usaspending">USASpending.gov API</h3>
-          <p>USASpending.gov provides the public interface to FPDS (Federal Procurement Data System) data — all federal contract awards, grants, loans, and other financial assistance. No authentication required for public endpoints. Rate limits apply: the API allows up to 1,000 requests per hour without a key.</p>
+          <p>USASpending.gov is the public-facing portal for all federal spending data — contract awards, grants, loans, and other financial assistance. No API key or authentication required for public endpoints. Rate limits apply but are not formally published; for bulk data pulls, use the award data archive downloads rather than paginating the API.</p>
 
           <div class="code-block-wrapper">
             <div class="code-block-header">
@@ -552,7 +552,7 @@ spark.sql("""
 
           <div class="failure-card">
             <h4>Failure Mode 2: Treating API Results as Authoritative Without Reconciliation</h4>
-            <p>The USASpending.gov API reflects FPDS data, but FPDS itself has known data quality issues — late reporting, missing modifications, and vendor name inconsistencies. For any analysis that will be presented to a contracting officer or program manager, reconcile against the official contracting system of record, not just the API. Note this limitation explicitly in your analysis.</p>
+            <p>The USASpending.gov API reflects contract data sourced from SAM.gov (formerly FPDS-NG), which has known data quality issues — late reporting, missing modifications, and vendor name inconsistencies. For any analysis that will be presented to a contracting officer or program manager, reconcile against the official contracting system of record, not just the API. Note this limitation explicitly in your analysis.</p>
           </div>
 
           <div class="failure-card">
