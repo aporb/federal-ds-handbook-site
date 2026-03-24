@@ -566,6 +566,7 @@ img {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  text-decoration: none;
   transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
@@ -576,6 +577,16 @@ img {
   box-shadow: 0 4px 16px rgba(197,165,114,0.4);
 }
 
+/* btn-primary in dark mode: white text on gold for better contrast */
+[data-theme="dark"] .btn-primary {
+  color: #0F1117;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  color: #0F1117;
+}
+
+/* btn-secondary: hero context (dark bg) */
 .btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -588,6 +599,7 @@ img {
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 8px;
   cursor: pointer;
+  text-decoration: none;
   transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
@@ -595,6 +607,21 @@ img {
   background: rgba(255,255,255,0.14);
   color: #FFFFFF;
   border-color: rgba(255,255,255,0.28);
+}
+
+/* btn-secondary on light backgrounds (outside hero) */
+.prose .btn-secondary,
+.exercises-callout .btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+}
+
+.prose .btn-secondary:hover,
+.exercises-callout .btn-secondary:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--advana-gold);
 }
 
 .platform-strip {
