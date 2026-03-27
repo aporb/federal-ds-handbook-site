@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Native AI agent integration for the Federal Data Science Handbook. CLAUDE.md context files, slash commands for compliance checking and code generation, support for Claude Code, Cursor, OpenCode, and Cline.">
+  <title>Agent Integration — Federal DS Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/prism-theme.css">
+  <!-- UX-021: Theme init in <head> to prevent flash of wrong theme -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+<!-- UX-011: Skip-to-content link -->
+<a href="#main-content" class="skip-to-content sr-only">Skip to main content</a>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+  <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <a href="index.html" class="nav-brand" aria-label="Home">
+    <img src="assets/favicon.svg" class="nav-brand-icon" alt="" aria-hidden="true" width="28" height="28">
+    <span class="nav-brand-text">
+      <span class="nav-brand-title">Federal</span>
+      <span class="nav-brand-subtitle">Data Science Handbook</span>
+    </span>
+  </a>
+
+  <div class="nav-spacer"></div>
+
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chapters/01-introduction.html">Chapters</a></li>
+    <li><a href="index.html#platforms">Platforms</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Resources</a>
+      <div class="nav-dropdown-menu" role="menu">
+        <a href="agents.html" role="menuitem">Agent Integration</a>
+        <a href="docker.html" role="menuitem">Docker Environment</a>
+        <a href="security.html" role="menuitem">Security Reference</a>
+      </div>
+    </li>
+  </ul>
+
+  <div class="nav-actions">
+    <button class="btn-icon" id="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="https://github.com/aporb/data-science-learning-handbook" class="btn-icon nav-github" aria-label="View on GitHub" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+    </a>
+    <!-- UX-016: aria-live region for theme toggle announcements -->
+    <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" role="complementary" aria-label="Navigation">
+  <!-- UX-007: Home link for mobile navigation -->
+  <div class="sidebar-section">
+    <span class="sidebar-label">Navigation</span>
+    <nav aria-label="Site navigation"><ul class="sidebar-nav" role="list">
+      <li><a href="index.html">Home</a></li>
+    </ul></nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Chapters</span>
+    <nav aria-label="Chapters"><ul class="sidebar-nav" role="list">
+      <li><a href="chapters/01-introduction.html" style="font-weight:600;color:var(--text-primary)"><span class="chapter-num">01</span> Introduction</a></li>
+      <li><a href="chapters/02-python-r-foundations.html"><span class="chapter-num">02</span> Python &amp; R</a></li>
+      <li><a href="chapters/03-data-acquisition.html"><span class="chapter-num">03</span> Data Acquisition</a></li>
+      <li><a href="chapters/04-data-wrangling.html"><span class="chapter-num">04</span> Data Wrangling</a></li>
+      <li><a href="chapters/05-exploratory-analysis.html"><span class="chapter-num">05</span> Exploratory Analysis</a></li>
+      <li><a href="chapters/06-supervised-ml.html"><span class="chapter-num">06</span> Supervised ML</a></li>
+      <li><a href="chapters/07-unsupervised-ml.html"><span class="chapter-num">07</span> Unsupervised ML</a></li>
+      <li><a href="chapters/08-deep-learning.html"><span class="chapter-num">08</span> Deep Learning</a></li>
+      <li><a href="chapters/09-mlops.html" style="font-weight:600;color:var(--text-primary)"><span class="chapter-num">09</span> MLOps</a></li>
+      <li><a href="chapters/10-visualization.html"><span class="chapter-num">10</span> Visualization</a></li>
+      <li><a href="chapters/11-deployment.html" style="font-weight:600;color:var(--text-primary)"><span class="chapter-num">11</span> Deployment</a></li>
+      <li><a href="chapters/12-ethics-governance.html" style="font-weight:600;color:var(--text-primary)"><span class="chapter-num">12</span> Ethics &amp; Governance</a></li>
+      <li><a href="chapters/13-advanced-topics.html"><span class="chapter-num">13</span> Advanced Topics</a></li>
+    </ul></nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Platform Guides</span>
+    <nav aria-label="Platform guides"><ul class="sidebar-nav" role="list">
+      <li><a href="platforms/advana.html"><span class="platform-dot" style="background:#C5A572"></span> Advana</a></li>
+      <li><a href="platforms/databricks.html"><span class="platform-dot" style="background:#FF3621"></span> Databricks</a></li>
+      <li><a href="platforms/qlik.html"><span class="platform-dot" style="background:#009845"></span> Qlik</a></li>
+      <li><a href="platforms/navy-jupiter.html"><span class="platform-dot" style="background:#003B5C"></span> Navy Jupiter</a></li>
+      <li><a href="platforms/palantir.html"><span class="platform-dot" style="background:#1B2A4A"></span> Palantir AIP/Foundry</a></li>
+    </ul></nav>
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label">Resources</span>
+    <nav aria-label="Resources"><ul class="sidebar-nav" role="list">
+      <li><a href="agents.html">Agent Integration</a></li>
+      <li><a href="docker.html">Docker Environment</a></li>
+      <li><a href="security.html">Security Reference</a></li>
+    </ul></nav>
+  </div>
+</aside>
+
+<div class="page-wrapper">
+  <main class="main-content" id="main-content">
+
+    <div class="platform-hero" style="--platform-color: #1B2A4A">
+      <div class="platform-eyebrow">
+        <span class="platform-dot-large" aria-hidden="true"></span>
+        <span class="platform-hero-eyebrow">Reference</span>
+      </div>
+      <h1 class="platform-hero-title">Agent Integration</h1>
+      <p class="platform-hero-desc">The Federal Data Science Handbook is designed to work natively with AI coding agents. Clone the repo and your agent has 96,000 words of federal data science context available on demand &mdash; platform constraints, compliance rules, code patterns, and practitioner knowledge.</p>
+      <div class="platform-tags">
+        <span class="platform-tag-pill">CLAUDE.md</span>
+        <span class="platform-tag-pill">AGENTS.md</span>
+        <span class="platform-tag-pill">Claude Code</span>
+        <span class="platform-tag-pill">Cursor</span>
+        <span class="platform-tag-pill">OpenCode</span>
+        <span class="platform-tag-pill">Cline</span>
+      </div>
+    </div>
+
+    <div class="chapter-layout">
+      <article class="chapter-main">
+        <div class="prose" id="prose-content">
+
+          <h2 id="how-it-works">How It Works</h2>
+          <p>The handbook repo ships with a file called <code>CLAUDE.md</code> at the root. When you open the repo in Claude Code, this file is automatically loaded as context &mdash; your agent immediately has the full content map, three usage modes, and every constraint it needs.</p>
+
+          <p>There are three ways to use the handbook with an agent:</p>
+
+          <ol>
+            <li><strong>REFERENCE</strong> &mdash; You're coding on a federal platform and need a quick answer. The agent navigates to the right chapter and code example.</li>
+            <li><strong>CODE GENERATION</strong> &mdash; You need compliant boilerplate. The <code>/generate-federal-code</code> command handles platform detection, constraint enforcement, and docstring formatting.</li>
+            <li><strong>TEACHING</strong> &mdash; You want to understand a concept. The <code>/teach</code> command walks through the handbook's narrative with code examples and pause points.</li>
+          </ol>
+
+          <p>The context is hierarchical. Sub-directories have their own <code>CLAUDE.md</code> files:</p>
+
+          <ul>
+            <li><code>chapters/CLAUDE.md</code> &mdash; chapter index and code file mapping for all 13 chapters</li>
+            <li><code>platform-guides/CLAUDE.md</code> &mdash; platform selection matrix, IL-level coverage, and guide structure</li>
+            <li><code>security-compliance/CLAUDE.md</code> &mdash; module classification, architecture flow, and key files for compliance review</li>
+          </ul>
+
+          <div class="callout callout-tip">
+            <p><code>AGENTS.md</code> provides the same orientation for any AI agent that reads Markdown &mdash; not just Claude Code. The repo includes both files so it works regardless of which tool you use.</p>
+          </div>
+
+          <h2 id="slash-commands">Slash Commands</h2>
+          <p>Three pre-built slash commands ship with the handbook. Each is available in Claude Code (as <code>/command</code> invocations), OpenCode (identical command structure), and Cline (as interactive workflows with wizard menus). Cursor invokes the same workflows conversationally through <code>.cursorrules</code>.</p>
+
+          <h3 id="compliance-check"><code>/compliance-check</code></h3>
+          <p>Reviews code against federal security and compliance requirements. Reads <code>security-compliance/security-policy.md</code> plus type-specific sources, then generates a structured findings report.</p>
+
+          <p>What it checks:</p>
+          <ul>
+            <li>No hardcoded credentials &mdash; must use env vars or platform secret management</li>
+            <li>No external API calls with government data at IL4+</li>
+            <li>Self-hosted models only at IL4+ for inference and embeddings</li>
+            <li>AES-256 at rest, TLS 1.3 in transit</li>
+            <li>CAC/PIV authentication &mdash; no username/password auth</li>
+            <li>RBAC with least privilege</li>
+            <li>Audit logging for all data access and model inference</li>
+            <li>Model cards required for production ML models</li>
+            <li>Bias audit required before deploying classifiers</li>
+            <li>NIST AI RMF documentation for AI systems</li>
+          </ul>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>Example output</span>
+              <button class="copy-btn" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-none">## Compliance Review — classification pipeline
+
+### Findings
+
+| # | Finding                          | Severity | Standard    | Remediation                    |
+|---|----------------------------------|----------|-------------|--------------------------------|
+| 1 | External API call at IL4         | Critical | FedRAMP     | Use self-hosted model endpoint |
+| 2 | No audit logging on predictions  | High     | NIST 800-53 | Add audit_log() after infer()  |
+| 3 | Missing model card               | Medium   | DoD AI      | Generate via ch12 template     |
+
+### Priority Fixes
+1. Replace api.openai.com call with self-hosted endpoint (see ch13 RAG pipeline)
+2. Add audit logging to inference function (see security-compliance/audit/)</code></pre>
+          </div>
+
+          <div class="callout callout-note">
+            <p><strong>Severity levels:</strong> Critical = data leaks across classification boundaries or credentials exposed. High = missing encryption, hardcoded credentials, external API calls with government data. Medium = incomplete RBAC, missing model cards. Low = style issues, missing docstring headers.</p>
+          </div>
+
+          <h3 id="generate-federal-code"><code>/generate-federal-code</code></h3>
+          <p>Generates platform-aware Python with mandatory compliance headers. Covers 22 task types across Databricks, Foundry, Advana, Navy Jupiter, and Qlik.</p>
+
+          <p>Every generated file starts with a mandatory docstring header:</p>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>Python — mandatory docstring header</span>
+              <button class="copy-btn" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-python">"""
+[Descriptive Title]
+[What this code does and the use case it serves]
+Platform: [Databricks | Foundry | Advana | Local | Any]
+Usage: [exactly how to run it]
+"""</code></pre>
+          </div>
+
+          <p>Platform constraints enforced:</p>
+          <ul>
+            <li><strong>Databricks</strong>: SparkSession pre-initialized, no pip install in cells, <code>dbutils.secrets</code> for credentials, Unity Catalog for governance</li>
+            <li><strong>Foundry</strong>: <code>palantir_models</code> for model publishing, <code>@transform_df</code> decorators for pipelines, no direct file I/O</li>
+            <li><strong>Advana / Navy Jupiter</strong>: JupyterHub on shared cluster, conda environments only, no sudo</li>
+            <li><strong>All platforms at IL4+</strong>: No external API calls, self-hosted models and embeddings only, data stays within classification boundary</li>
+          </ul>
+
+          <div class="callout callout-warning">
+            <p>At IL4 and above, the command will never generate code that calls external APIs (OpenAI, Anthropic hosted, HuggingFace Inference). All model inference and embedding generation must use self-hosted or platform-provided endpoints.</p>
+          </div>
+
+          <h3 id="teach"><code>/teach</code></h3>
+          <p>Interactive tutor mode. Opens with the chapter's narrative hook &mdash; a real scene with a real person in a real place &mdash; then presents learning objectives as a live checklist and walks through concepts one at a time with code.</p>
+
+          <p>The teaching flow:</p>
+          <ol>
+            <li>Maps your topic to the relevant chapter</li>
+            <li>Opens with the chapter's narrative hook (first ~200 words)</li>
+            <li>Presents learning objectives as a checklist</li>
+            <li>Walks through each concept with federal context</li>
+            <li>Pauses between concepts: "Want to see the code? Or would you like me to explain more?"</li>
+            <li>Tracks which objectives have been covered</li>
+            <li>Closes with a recap and pointer to exercises</li>
+          </ol>
+
+          <div class="callout callout-tip">
+            <p>The tutor follows the handbook's practitioner voice &mdash; specific details, named programs, direct "you" address. Not "one might consider deploying a model" but "you will need to get an ATO before your model touches production data."</p>
+          </div>
+
+          <h2 id="tool-support">Tool Support</h2>
+          <p>The three workflows are implemented for four AI coding environments.</p>
+
+          <div class="agent-tool-grid">
+
+            <div class="agent-tool-card">
+              <p class="agent-tool-card-name">Claude Code</p>
+              <p class="agent-tool-card-detail">Three slash commands available via <code>/command</code> syntax. Context auto-loaded from <code>CLAUDE.md</code> on session start.</p>
+              <p class="agent-tool-card-file"><code>.claude/commands/</code></p>
+            </div>
+
+            <div class="agent-tool-card">
+              <p class="agent-tool-card-name">Cursor</p>
+              <p class="agent-tool-card-detail">Same workflows, invoked conversationally. Rules and constraints auto-loaded on project open.</p>
+              <p class="agent-tool-card-file"><code>.cursorrules</code></p>
+            </div>
+
+            <div class="agent-tool-card">
+              <p class="agent-tool-card-name">OpenCode</p>
+              <p class="agent-tool-card-detail">Three slash commands with identical structure. Config defines context files, workflows, and prohibited-file rules.</p>
+              <p class="agent-tool-card-file"><code>.opencode/config.yaml</code></p>
+            </div>
+
+            <div class="agent-tool-card">
+              <p class="agent-tool-card-name">Cline</p>
+              <p class="agent-tool-card-detail">Three interactive workflows with wizard-style menus. Most interactive implementation &mdash; uses branching prompts at every step.</p>
+              <p class="agent-tool-card-file"><code>.clinerules/workflows/</code></p>
+            </div>
+
+          </div>
+
+          <p>For other AI agents that read Markdown, <code>AGENTS.md</code> at the repo root provides the same workflow instructions, suggested prompts, and directory structure. The key constraint for any agent: never modify QA-signed-off content (chapter READMEs, platform guides, exercises).</p>
+
+          <h2 id="context-architecture">Context Architecture</h2>
+          <p>The handbook uses hierarchical context files so agents get progressively more specific guidance as they navigate into subdirectories.</p>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>Directory structure</span>
+              <button class="copy-btn" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-none">handbook/
+├── CLAUDE.md                    # Root context — content map, usage modes, commands
+├── AGENTS.md                    # Agent-agnostic guide — workflows, prompts
+├── .claude/commands/            # Claude Code slash commands
+│   ├── compliance-check.md
+│   ├── generate-federal-code.md
+│   └── teach.md
+├── .cursorrules                 # Cursor IDE rules (auto-loaded)
+├── .opencode/                   # OpenCode config + commands
+├── .clinerules/                 # Cline rules + interactive workflows
+├── chapters/
+│   └── CLAUDE.md                # Chapter index, code file mapping
+├── platform-guides/
+│   └── CLAUDE.md                # Platform selection matrix
+└── security-compliance/
+    └── CLAUDE.md                # Module classification, architecture flow</code></pre>
+          </div>
+
+          <p><code>CLAUDE.md</code> is auto-loaded by Claude Code. <code>AGENTS.md</code> serves the same purpose for any Markdown-reading agent. The repo includes both so it works regardless of which tool you use. The sub-directory <code>CLAUDE.md</code> files (<code>chapters/</code>, <code>platform-guides/</code>, <code>security-compliance/</code>) provide scoped context &mdash; an agent working inside <code>chapters/</code> gets a chapter-specific index without needing to re-read the full root context.</p>
+
+          <h2 id="built-with-agents">Built With Agents</h2>
+          <p>The handbook was written using AI coding agents following two internal specifications.</p>
+
+          <p><code>CHAPTER_WRITING_SPEC.md</code> &mdash; an autonomous writing spec that defines chapter structure, quality criteria, and a "NEVER STOP" directive. The agent writes through to completion without pausing for human checkpoints &mdash; the spec itself is the quality control, not mid-process intervention.</p>
+
+          <p><code>STYLE_GUIDE.md</code> &mdash; a practitioner voice guide that explicitly bans AI writing patterns. No "delve," no "landscape," no "robust." Every chapter opens with a specific scene &mdash; a real person in a real place with a real problem. The guide was designed to produce writing that doesn't read like AI wrote it.</p>
+
+          <p>The handbook was the first test of its own agent integration.</p>
+
+          <h2 id="get-started">Get Started</h2>
+
+          <ol>
+            <li>
+              Clone the repo:
+              <div class="code-block-wrapper">
+                <div class="code-block-header">
+                  <span>bash</span>
+                  <button class="copy-btn" aria-label="Copy code">Copy</button>
+                </div>
+                <pre><code class="language-bash">git clone https://github.com/aporb/data-science-learning-handbook</code></pre>
+              </div>
+            </li>
+            <li>Open in your AI tool (Claude Code, Cursor, OpenCode, or Cline)</li>
+            <li>The agent reads <code>CLAUDE.md</code> automatically. Start with a question.</li>
+          </ol>
+
+          <div class="callout callout-tip">
+            <p><strong>Suggested first prompts:</strong></p>
+            <ul>
+              <li>"What are the five platforms and when do I use each one?"</li>
+              <li>"How do I set up Python on Databricks at IL4?"</li>
+              <li>"Review my code for federal compliance." (triggers compliance checker)</li>
+              <li>"Generate a classification pipeline for Databricks at IL4."</li>
+              <li>"Walk me through chapter 1." (triggers interactive tutor)</li>
+            </ul>
+          </div>
+
+        </div>
+      </article>
+
+      <nav class="chapter-toc" aria-label="On this page">
+        <span class="toc-label">On this page</span>
+        <ul class="toc-list" id="toc-list" role="list">
+          <!-- JS-generated -->
+        </ul>
+      </nav>
+    </div>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-brand">Federal Data Science<br>Handbook</p>
+          <p class="footer-tagline">Open reference. No registration.</p>
+        </div>
+        <div>
+          <p class="footer-col-title">Platforms</p>
+          <ul class="footer-links" role="list">
+            <li><a href="platforms/advana.html">Advana</a></li>
+            <li><a href="platforms/databricks.html">Databricks</a></li>
+            <li><a href="platforms/qlik.html">Qlik</a></li>
+            <li><a href="platforms/navy-jupiter.html">Navy Jupiter</a></li>
+            <li><a href="platforms/palantir.html">Palantir</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Related Chapters</p>
+          <ul class="footer-links" role="list">
+            <li><a href="chapters/09-mlops.html">09 &mdash; MLOps</a></li>
+            <li><a href="chapters/11-deployment.html">11 &mdash; Deployment</a></li>
+            <li><a href="chapters/12-ethics-governance.html">12 &mdash; Ethics &amp; Governance</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">MIT (code) &middot; CC BY 4.0 (content) &middot; <a href="https://github.com/aporb/data-science-learning-handbook" style="color:rgba(255,255,255,0.6)">GitHub</a></span>
+        <div class="footer-platform-dots" aria-hidden="true">
+          <span class="footer-dot" style="background:#C5A572"></span>
+          <span class="footer-dot" style="background:#FF3621"></span>
+          <span class="footer-dot" style="background:#009845"></span>
+          <span class="footer-dot" style="background:#003B5C"></span>
+          <span class="footer-dot" style="background:#4A6FA5"></span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"
+  integrity="sha512-hpZ5pDCF2bRCweL5WoA0/N1elet1NPMokenOoo9DQVL/ScN773UmE8xBkUWQrz8+I8cqAliNEJkBTK2O4ymrw=="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"
+  integrity="sha512-AKaNmg8COK0zEbjTdMHJAPJ0z6VeNqvRvH4/d5M4sHJbQQUToMBtodq4HaV4fa+WV2UTfoperEws9Pi97ZJNQ=="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"
+  integrity="sha512-35RBtvuCKWANuRid6RXP2gYm4D5RMieVL/xbp6KiMXlIqgNrI7XRUh9HurE8lKHW4aRpC0TZU3ZfqG8qmQ3Dg=="
+  crossorigin="anonymous" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
