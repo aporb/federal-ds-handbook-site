@@ -1518,12 +1518,13 @@ a.chapter-meta-link:hover {
   background: var(--palantir-blue);
   color: rgba(255,255,255,0.7);
   padding: 3rem 4rem;
-  margin-left: var(--sidebar-width);
+  margin-left: calc(-1 * var(--sidebar-width));
+  width: calc(100% + var(--sidebar-width));
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
 }
@@ -1682,6 +1683,7 @@ a.chapter-meta-link:hover {
 
   .site-footer {
     margin-left: 0;
+    width: 100%;
   }
 
   .hero {
