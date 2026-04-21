@@ -162,10 +162,6 @@
           <p><strong>Databricks</strong> is the data lakehouse and ML platform within Advana. This is where data scientists doing serious modeling work will spend most of their time — Python and PySpark notebooks, Spark-based distributed processing, and access to the Unity Catalog data governance layer.</p>
           <p><strong>MLflow</strong> comes packaged with Databricks and handles experiment tracking, model registry, and deployment management. <strong>DataRobot</strong> and <strong>C3 AI</strong> provide automated ML capabilities. <strong>Amazon SageMaker</strong> is available for model training and deployment at scale.</p>
 
-          <blockquote>
-            <p>&#9888; <strong>Tool Rationalization Watch (2026):</strong> DataRobot is being phased out as part of a DoD-wide tool consolidation driven by Palantir's expanded deployment. New projects should plan for Databricks or Palantir AIP as the primary ML platforms. C3 AI is under review for similar divestment. Expected completion: post-September 2026.</p>
-          </blockquote>
-
           <h3 id="tools-governance">Data Governance</h3>
           <p><strong>Collibra</strong> is the data catalog and governance layer. Before you start pulling datasets, Collibra is where you verify what a field actually means, who owns it, when it was last updated, and whether the definition has changed. This is not optional discipline — DoD data has a persistent labeling problem, and Collibra is the official place to resolve ambiguity.</p>
 
@@ -203,7 +199,7 @@
           <h2 id="data-science-workflows">Data Science Workflows</h2>
 
           <h3 id="four-tiers">The Four Tiers</h3>
-          <p><strong>Consumers</strong> get pre-built Qlik dashboards for their functional area. <strong>Analysts</strong> build custom dashboards in Qlik, combine data across sources using the Qlik mashup API. <strong>Data scientists</strong> work in Databricks notebooks — Python, PySpark, SQL, with MLflow for experiment tracking. (DataRobot and C3 AI were previously available for automated ML; both are being phased out — see the Tool Rationalization Watch note above.) <strong>Data engineers</strong> build and maintain pipelines, set up real-time replication feeds, manage data quality monitoring.</p>
+          <p><strong>Consumers</strong> get pre-built Qlik dashboards for their functional area. <strong>Analysts</strong> build custom dashboards in Qlik, combine data across sources using the Qlik mashup API. <strong>Data scientists</strong> work in Databricks notebooks — Python, PySpark, SQL, with MLflow for experiment tracking. <strong>Data engineers</strong> build and maintain pipelines, set up real-time replication feeds, manage data quality monitoring.</p>
 
           <div class="code-block-wrapper">
             <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button></div>
