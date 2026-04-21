@@ -393,6 +393,12 @@ def generate_drift_report(
 
           <h2 id="failure-modes">Where This Goes Wrong</h2>
 
+          <h3 id="cross-domain-deployment">Cross-Domain Deployment: "Code Low, Deploy High"</h3>
+          <p>On DoD programs that span classification levels, the deployment pipeline has an additional dimension: promoting code and models from lower classification environments (IL2/IL4) to higher ones (IL5, IL6, JWICS). The DoD Enterprise DevSecOps Reference Design (September 2022) formalizes this as the "code low, deploy high" pattern.</p>
+          <p>For ML pipelines, this means your training, testing, and validation happen at IL2 or IL4 where iteration is fast. The CI/CD pipeline then promotes validated artifacts to the higher-classification environment through an approved cross-domain transfer mechanism. The model runs against classified data at deployment time, not during development.</p>
+          <p>Practically, this means keeping your business logic and model code classification-agnostic. Data paths, classification-specific configurations, and environment variables should be externalized, not hardcoded. The Databricks Workflows or Palantir Pipeline Builder job that works at IL4 should be the same job definition that runs at IL6 — just pointed at different data sources and compute resources.</p>
+          <p>Reference: <a href="https://dodcio.defense.gov/Portals/0/Documents/Library/DoDRefDesignCloudGithub.pdf" target="_blank" rel="noopener">https://dodcio.defense.gov/Portals/0/Documents/Library/DoDRefDesignCloudGithub.pdf</a></p>
+
           <div class="failure-card">
             <h4>Failure Mode 1: No Monitoring After Deployment</h4>
             <p>The model is deployed. You roll off the contract. Nobody checks whether it's still working. Six months later a new analyst notices the predictions are wrong and discovers the training data is two years stale and the operational context changed. Fix: define the monitoring owner, the monitoring frequency, and the retraining trigger in writing before you deploy. Not after. Before.</p>

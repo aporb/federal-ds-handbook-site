@@ -262,13 +262,13 @@ graph TD
 
           <h3 id="advana">Advana: The Pentagon's Data Platform</h3>
 
-          <p>Advana — short for "Advancing Analytics" — is the DoD's enterprise-wide data and analytics platform. Built originally by Booz Allen Hamilton under a $674 million GSA contract, it was designed to aggregate data from thousands of incompatible DoD business systems for one specific purpose: pass the Pentagon's financial audit.</p>
+          <p>Advana — short for "Advancing Analytics" — is the DoD's enterprise-wide data and analytics platform. Built originally by Booz Allen Hamilton under a $674 million GSA contract, it was designed to aggregate data from thousands of incompatible DoD business systems for one specific purpose: pass the Pentagon's financial audit. The platform's statutory basis is FY18 NDAA Sections 911-913 (financial data transparency and enterprise analytics capability), reinforced by the May 2021 Deputy SecDef memo designating it as the single enterprise authoritative data platform for all DoD components.</p>
 
           <p>That narrow origin explains a lot about how Advana evolved. Starting from financial management, it grew to cover logistics, readiness, procurement, personnel, and health — all the domains DoD cares about measuring. As of 2024, it serves more than 100,000 users across 55+ organizations with 3,000+ NIPRNET data sources ingested and 250-300 applications in production.</p>
 
           <p>The CDAO (Chief Digital and Artificial Intelligence Office) owns it. That is important because the CDAO is also where the government's AI strategy lives. Advana is not just a data warehouse; it is the intended foundation for DoD-wide AI application development.</p>
 
-          <p>Here is the hard part: as of early 2026, Advana is mid-restructuring. The January 2026 Hegseth memo split it into three tracks — a War Data Platform for AI development, a Financial Management track for audit remediation, and an Application Services track for consolidating legacy tools. The CDAO lost approximately 60% of its civilian workforce in 2025. The $15 billion AAMAC recompete was halted. The platform still serves 100,000+ users, but the institutional machinery around it is thinner than it was two years ago.</p>
+          <p>Here is the hard part: as of early 2026, Advana is mid-restructuring. The January 2026 Hegseth memo split it into three tracks — a War Data Platform for AI development, a Financial Management track for audit remediation, and an Application Services track for consolidating legacy tools. The CDAO lost approximately 60% of its civilian workforce in 2025, with losses concentrated in the legacy DDS and JAIC teams. The gap has been partially filled by borrowed government labor from other organizations, but the institutional machinery around the platform is thinner than it was two years ago. The $15 billion AAMAC recompete was halted. The platform still serves 100,000+ users.</p>
 
           <div class="callout callout-note">
             <span class="callout-icon" aria-hidden="true">&#8505;</span>
@@ -424,29 +424,33 @@ graph TD
                 <th>IL4</th>
                 <th>IL5</th>
                 <th>IL6/Classified</th>
+                <th>JWICS</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Advana</td>
+                <td>Advana (WDP)</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Yes (SIPR)</td>
-                <td>SIPR accreditation</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Yes</td>
               </tr>
               <tr>
                 <td>Navy Jupiter</td>
                 <td>Yes</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>JWICS accreditation</td>
+                <td>Yes</td>
+                <td>Yes (shared stack with WDP)</td>
               </tr>
               <tr>
                 <td>Databricks</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Yes</td>
-                <td>No public IL6</td>
+                <td>Yes (SaaS)</td>
+                <td>No</td>
+                <td>In progress (expected early 2027)</td>
               </tr>
               <tr>
                 <td>Qlik</td>
@@ -454,12 +458,14 @@ graph TD
                 <td>Yes</td>
                 <td>Not confirmed</td>
                 <td>No</td>
+                <td>No</td>
               </tr>
               <tr>
                 <td>Palantir AIP/Foundry</td>
                 <td>Yes</td>
                 <td>Yes</td>
                 <td>Yes</td>
+                <td>Yes (via Azure Gov Top Secret)</td>
                 <td>Yes (via Azure Gov Top Secret)</td>
               </tr>
             </tbody>
@@ -570,24 +576,48 @@ graph TD
                 <td>Operational AI, ontology-based integration</td>
               </tr>
               <tr>
-                <td>Networks</td>
-                <td>NIPR, SIPR</td>
-                <td>NIPR, SIPR, JWICS</td>
-                <td>IL2–IL5</td>
-                <td>IL2–IL4</td>
-                <td>IL2–IL6 (Azure Gov Top Secret)</td>
+                <td>Managed by</td>
+                <td>CDAO</td>
+                <td>DON CIO/CDO</td>
+                <td>Commercial (deployed on GovCloud)</td>
+                <td>Commercial (deployed on AWS GovCloud)</td>
+                <td>Commercial (deployed on Azure/AWS Gov)</td>
               </tr>
               <tr>
                 <td>User scale</td>
                 <td>100,000+</td>
                 <td>4,000+</td>
-                <td>80% of fed exec depts</td>
-                <td>Fed civilian + DoD</td>
-                <td>DoD + civilian</td>
+                <td>80% of federal executive depts</td>
+                <td>Federal civilian + DoD</td>
+                <td>DoD + civilian agencies</td>
+              </tr>
+              <tr>
+                <td>Networks</td>
+                <td>NIPR, SIPR, IL5, IL6, JWICS</td>
+                <td>NIPR, SIPR, JWICS (shared stack with WDP)</td>
+                <td>IL2–IL5 (SaaS), JWICS expected 2027</td>
+                <td>IL2–IL4</td>
+                <td>IL2–IL6, JWICS (Azure Gov Top Secret)</td>
+              </tr>
+              <tr>
+                <td>PII/PHI</td>
+                <td>Yes</td>
+                <td>Yes (explicit approval)</td>
+                <td>With IL5 controls</td>
+                <td>With data governance</td>
+                <td>With ATO</td>
+              </tr>
+              <tr>
+                <td>Key tools</td>
+                <td>Qlik, Databricks, MLflow, Collibra</td>
+                <td>iQuery, Qlik, Databricks, Collibra, Tableau (under review for divestment)</td>
+                <td>Spark, MLflow, Unity Catalog, Mosaic AI</td>
+                <td>QIX Engine, Predict, SSE, Answers</td>
+                <td>Ontology, AIP Logic, Agent Studio, Workshop</td>
               </tr>
               <tr>
                 <td>ML capability</td>
-                <td>Via Databricks/DataRobot</td>
+                <td>Via Databricks (DataRobot phasing out; C3 AI under review)</td>
                 <td>Via Databricks</td>
                 <td>Native (full MLOps)</td>
                 <td>No-code via Qlik Predict</td>
@@ -600,6 +630,22 @@ graph TD
                 <td>Via GovCloud tenant</td>
                 <td>Via JWCC / FedRAMP marketplace</td>
                 <td>Via FedRAMP / Army EA</td>
+              </tr>
+              <tr>
+                <td>Audit/compliance</td>
+                <td>DoD ATO; NIPR/SIPR accreditation</td>
+                <td>DoD ATO; tri-network</td>
+                <td>FedRAMP High, IL5</td>
+                <td>FedRAMP Moderate, IL4</td>
+                <td>FedRAMP High, IL5/IL6</td>
+              </tr>
+              <tr>
+                <td>Cost model</td>
+                <td>Program-funded (BAH prime); transitioning to WDP budget lines</td>
+                <td>Program-funded (inherits Advana infrastructure)</td>
+                <td>Consumption (DBU-based); Carahsoft GSA / JWCC Marketplace</td>
+                <td>License-based; FedRAMP Moderate tier</td>
+                <td>Enterprise contract (Army EA up to $10B); consumption for other agencies</td>
               </tr>
               <tr>
                 <td>When to use</td>

@@ -130,6 +130,7 @@
           <h2 id="overview">Overview</h2>
           <p>Databricks is the production ML development environment in the DoD data ecosystem. On both Advana and Navy Jupiter, Databricks is the tool you use when your work requires scale — distributed compute, version-controlled ML pipelines, experiment tracking, and model deployment.</p>
           <p>The platform achieved FedRAMP High authorization on AWS GovCloud on February 27, 2025. It holds DoD IL5 authorization on both AWS and Azure Government. As of December 2025, all new Databricks accounts exclusively use Unity Catalog as the governance layer.</p>
+          <p><strong>Accreditation specifics:</strong> Databricks is installed at all Impact Levels up to IL5. The SaaS offering (managed Databricks on GovCloud) is accredited at IL5. For IL6/classified workloads, Databricks is not currently available as a managed service; Palantir or on-premises enclaves fill that gap. JWICS SaaS availability is expected in early 2027.</p>
           <p>The core technical components — PySpark for distributed data processing, MLflow for experiment tracking, Delta Lake for storage, Unity Catalog for governance — are all open source or open standard. That matters in a government context where vendor lock-in and data portability are real concerns.</p>
 
           <h2 id="architecture">Architecture on Advana and Jupiter</h2>
@@ -314,6 +315,9 @@ LIMIT 20;
               <p>Always use the three-part name (<code>catalog.schema.table</code>) when referencing tables in production code. Relative references work in notebooks but break in scheduled jobs and pipelines where the default catalog may differ.</p>
             </div>
           </div>
+
+          <h3 id="delta-sharing">Delta Sharing for Cross-Command Data Exchange</h3>
+          <p>When your program needs to share data across organizational boundaries — a combatant command sharing curated intelligence feeds with a service-level analytics team, or a DoD agency sharing procurement data with a mission partner on a separate cloud tenant — Delta Sharing provides an open protocol that respects Unity Catalog access controls at the sharing boundary. The data provider controls exactly which tables and columns the recipient can access, and the recipient does not need a Databricks account. This is the mechanism to plan around for governed data sharing across DoD components that operate on separate infrastructure.</p>
 
           <h2 id="certifications">Certifications Worth Getting</h2>
           <table>
