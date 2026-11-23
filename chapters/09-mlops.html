@@ -182,7 +182,27 @@ with mlflow.start_run(run_name="rf_baseline") as run:
           </div>
 
           <h2 id="model-registry">Model Registry Lifecycle</h2>
-          <p>The MLflow Model Registry provides stage management: a model version moves from <code>None</code> → <code>Staging</code> → <code>Production</code> → <code>Archived</code>. In a federal program, stage transitions map to review gates: Staging requires a technical peer review; Production requires the program manager's sign-off and the monitoring plan to be in place.</p>
+          <p>Last verified: November 23, 2026. Databricks recommends Models in Unity Catalog. Set the registry URI to <code>databricks-uc</code> and use a three-part name: <code>catalog.schema.model</code>. Unity Catalog does not support the old registry stage APIs.</p>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span class="code-block-lang">python</span>
+              <button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-python">import mlflow
+from mlflow.tracking import MlflowClient
+
+mlflow.set_registry_uri("databricks-uc")
+client = MlflowClient(registry_uri="databricks-uc")
+name = "navy_logistics.maintenance.priority_classifier"
+# After evaluation and the required program approval:
+client.set_registered_model_alias(name, "champion", "7")
+model = mlflow.pyfunc.load_model(f"models:/{name}@champion")</code></pre>
+          </div>
+
+          <p>An alias is a mutable pointer. Record the resolved version, evaluation evidence, approver, and deployment change separately. Changing an alias does not automatically update an existing serving endpoint or certify its configuration. Confirm workspace privileges, model permissions, logging, and supported GovCloud features.</p>
+
+          <p><strong>Legacy Workspace Registry.</strong> Older examples use <code>None</code>, <code>Staging</code>, <code>Production</code>, and <code>Archived</code>. Their <code>transition_model_version_stage</code> calls and <code>models:/name/Production</code> URIs are legacy stage syntax, not Unity Catalog aliases. Use them only when maintaining an explicitly identified legacy backend, and plan migration. Sources: <a href="https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/" target="_blank" rel="noopener">Databricks model lifecycle</a>, <a href="https://mlflow.org/docs/latest/ml/model-registry/workflow/" target="_blank" rel="noopener">MLflow registry workflow</a>.</p>
 
           <div class="code-block-wrapper">
             <div class="code-block-header">
@@ -406,7 +426,7 @@ def generate_drift_report(
 
           <div class="failure-card">
             <h4>Failure Mode 2: Hardcoding Version Numbers</h4>
-            <p><code>mlflow.pyfunc.load_model("models:/my-model/3")</code> works until version 4 is promoted and the scoring pipeline isn't updated. Fix: always use stage aliases: <code>"models:/my-model/Production"</code>. Stage transitions are managed by the registry; version numbers are an implementation detail.</p>
+            <p><code>mlflow.pyfunc.load_model("models:/my-model/3")</code> works until version 4 is promoted and the scoring pipeline isn't updated. Fix: load a named alias and record the version it resolved to. On Unity Catalog use <code>"models:/catalog.schema.model@champion"</code>. Legacy <code>"models:/my-model/Production"</code> stage syntax applies only to an explicitly maintained Workspace Registry.</p>
           </div>
 
           <div class="failure-card">

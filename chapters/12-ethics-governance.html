@@ -140,14 +140,14 @@
           <p>Federal AI governance operates under a layered policy stack. Understanding which policies apply to your program determines what documentation is required and which review gates you must clear.</p>
           <ul>
             <li><strong>Executive Order 13960 (2020):</strong> Established principles for federal agency AI use — transparency, non-discrimination, accountability.</li>
-            <li><strong>Executive Order 14110 (2023):</strong> Required AI safety and security standards; directed NIST AI RMF adoption across agencies.</li>
+            <li><strong>Executive Order 14110 (2023):</strong> Directed AI safety and security standards and risk-management practice. Later executive action changed parts of the federal approach, so verify the current authority and scope instead of assuming earlier requirements still apply.</li>
             <li><strong>Executive Order 14179 (2025):</strong> Shifted emphasis toward AI leadership and deployment acceleration while maintaining safety requirements.</li>
             <li><strong>DoD AI Ethical Principles (2020):</strong> Responsible, Equitable, Traceable, Reliable, Governable — the "RETRG" framework for DoD AI systems.</li>
             <li><strong>DoD Directive 3000.09:</strong> Human judgment in use-of-force decisions; applies to any system used in autonomous or semi-autonomous weapons contexts.</li>
           </ul>
 
           <h2 id="nist-ai-rmf">NIST AI RMF in Practice</h2>
-          <p>The NIST AI Risk Management Framework (AI RMF) is the practical governance framework most federal programs use. It has four functions: GOVERN, MAP, MEASURE, and MANAGE.</p>
+          <p>The NIST AI Risk Management Framework (AI RMF) is a voluntary framework unless an applicable authority adopts it. DoDI 5000.90 is titled “Cybersecurity for Acquisition Decision Authorities and Program Managers,” not “AI Acquisition,” and is not evidence of a universal AI RMF mandate. The framework has four functions: GOVERN, MAP, MEASURE, and MANAGE.</p>
 
           <table>
             <thead>
@@ -182,7 +182,7 @@
           </table>
 
           <h2 id="bias-testing">Bias Testing: Code, Not Intent</h2>
-          <p>Bias analysis must produce numbers. "Bias was considered" is not an analysis. Run the demographic parity and equalized odds checks before any model goes to a program manager, not after.</p>
+          <p>Bias analysis must produce numbers. "Bias was considered" is not an analysis. Run demographic parity and equalized odds checks before any model goes to a program manager, not after. No single fairness metric is universally appropriate. Choose metrics with domain, civil-rights, and legal reviewers.</p>
 
           <div class="code-block-wrapper">
             <div class="code-block-header">

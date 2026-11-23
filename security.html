@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Security &amp; Compliance — A production-grade security framework for federal data science platforms. CAC/PIV authentication, multi-classification data handling, RBAC, compliance automation, and tamper-proof audit trails.">
+  <meta name="description" content="Security &amp; Compliance — Educational reference patterns for federal data science security. CAC/PIV authentication, access control, classification handling, audit logging, and evidence mapping. Not certified controls.">
   <title>Security &amp; Compliance — Federal DS Handbook</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
@@ -142,13 +142,13 @@
         Reference Implementation
       </div>
       <h1 class="platform-hero-title">Security &amp; Compliance</h1>
-      <p class="platform-hero-desc">A production-grade security framework for federal data science platforms. 309 files implementing CAC/PIV authentication, multi-classification data handling, RBAC, automated compliance documentation, and tamper-proof audit trails.</p>
+      <p class="platform-hero-desc">An educational reference for federal security patterns: CAC/PIV authentication, access control, classification handling, audit logging, and evidence mapping. These are not certified controls, an ATO, or production-ready security. Syntax checks do not establish operational readiness.</p>
       <div class="platform-tags">
         <span class="platform-tag-pill">NIST 800-53</span>
         <span class="platform-tag-pill">FedRAMP</span>
         <span class="platform-tag-pill">FISMA</span>
         <span class="platform-tag-pill">DoD 8500</span>
-        <span class="platform-tag-pill">FIPS 140-2</span>
+        <span class="platform-tag-pill">FIPS 140-3 transition</span>
       </div>
     </div>
 
@@ -180,14 +180,14 @@
         <div class="prose" id="prose-content">
 
           <h2 id="core-modules">Six Core Modules</h2>
-          <p>The security-compliance directory is organized into six self-contained modules. Each one implements a specific domain of federal security requirements with production-ready code, configuration, and tests.</p>
+          <p>The security-compliance directory is organized into six self-contained module groups. Each one illustrates a domain of federal security requirements. Treat the code as study material: it needs configuration, independent review, and authorization before any operational use, and passing tests does not make it compliant.</p>
 
           <div class="security-module-grid">
 
             <div class="security-module-card">
               <h3>Multi-Classification Framework</h3>
               <p>Bell-LaPadula enforcement across NIPR, SIPR, and JWICS networks. ML-based content classification at &lt;50ms latency with intelligent caching and real-time data spillage detection. Cross-domain guard simulation for development environments.</p>
-              <span class="module-stat">35ms avg &middot; 98.5% SLA &middot; 87% cache hit rate</span>
+              <span class="module-stat">Illustrative targets &middot; not measured in this review</span>
             </div>
 
             <div class="security-module-card">
@@ -209,9 +209,9 @@
             </div>
 
             <div class="security-module-card">
-              <h3>Tamper-Proof Audit System</h3>
-              <p>Blockchain-inspired hash chaining with SHA-256, Merkle tree verification, and RSA-4096 digital signatures. WORM-compliant storage with 7-year retention. MITRE ATT&amp;CK framework integration for threat detection.</p>
-              <span class="module-stat">100K events/sec &middot; 7-year retention</span>
+              <h3>Audit Integrity System</h3>
+              <p>Hash chaining with SHA-256, Merkle tree verification, and digital signatures. Retention is configuration, not an assurance. A hash chain detects some tampering; it does not make storage immutable or tamper-proof. MITRE ATT&amp;CK framework integration for threat detection.</p>
+              <span class="module-stat">Illustrative targets &middot; not measured</span>
             </div>
 
             <div class="security-module-card">
@@ -223,7 +223,7 @@
           </div>
 
           <h2 id="standards-compliance">Standards Compliance</h2>
-          <p>Each module maps directly to one or more federal security standards. The table below shows which standards each module implements.</p>
+          <p>Each module maps to federal security standards as study material. The table below lists intended mappings. A mapping is not an assessment, a control implementation, or evidence of compliance. Validate against the current standard and the program system security plan.</p>
 
           <table>
             <thead>
@@ -234,7 +234,7 @@
                 <th>FISMA</th>
                 <th>DoD 8500</th>
                 <th>STIG</th>
-                <th>FIPS 140-2</th>
+                <th>FIPS 140-3</th>
               </tr>
             </thead>
             <tbody>
@@ -296,7 +296,7 @@
           </table>
 
           <h2 id="how-it-connects">How It Connects</h2>
-          <p>The six modules form a pipeline. A user authenticates via CAC/PIV, receives an encrypted OAuth token, and every subsequent request passes through RBAC/ABAC authorization. Data access is gated by the multi-classification framework, and every decision is recorded in the tamper-proof audit trail.</p>
+          <p>The six modules form a pipeline. A user authenticates via CAC/PIV, receives an encrypted OAuth token, and every subsequent request passes through RBAC/ABAC authorization. Data access is gated by the multi-classification framework, and every decision is written to an audit log with integrity checks. A hash chain detects some tampering; it does not make storage immutable, and access control and recovery must be validated separately.</p>
 
           <div class="mermaid-wrapper">
             <div class="mermaid">

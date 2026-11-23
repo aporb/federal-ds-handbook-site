@@ -382,109 +382,94 @@ graph TD
 
           <h3 id="impact-levels">DoD Impact Levels</h3>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Level</th>
-                <th>What It Covers</th>
-                <th>Access Requirement</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>IL2</td>
-                <td>Non-CUI public or low-sensitivity data</td>
-                <td>No clearance required</td>
-              </tr>
-              <tr>
-                <td>IL4</td>
-                <td>Controlled Unclassified Information (CUI)</td>
-                <td>U.S. person restriction; NIPRNET; ITAR applicability</td>
-              </tr>
-              <tr>
-                <td>IL5</td>
-                <td>Mission Critical National Security Information</td>
-                <td>Stricter CUI handling; U.S. citizen access only in some cases</td>
-              </tr>
-              <tr>
-                <td>IL6</td>
-                <td>Classified (Secret)</td>
-                <td>Secret clearance minimum; SIPRNET</td>
-              </tr>
-            </tbody>
-          </table>
+          <p>Impact level, classification, network, and system authorization are separate facts. A product name is not an authorization.</p>
 
-          <p>Most commercial federal data science work operates at IL2–IL4. The platforms covered in this handbook have the following clearances:</p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Level</th>
+                  <th>What It Covers</th>
+                  <th>Access and deployment boundary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>IL2</td>
+                  <td>Public or other non-CUI unclassified information</td>
+                  <td>Use the approved offering and access rules.</td>
+                </tr>
+                <tr>
+                  <td>IL4</td>
+                  <td>CUI under the applicable DoD cloud requirements</td>
+                  <td>Confirm the exact data category, service boundary, and program authorization.</td>
+                </tr>
+                <tr>
+                  <td>IL5</td>
+                  <td>CUI requiring higher protection and unclassified National Security Systems</td>
+                  <td>IL5 is unclassified. Confirm the offering, network, and system controls.</td>
+                </tr>
+                <tr>
+                  <td>IL6</td>
+                  <td>Classified information up to Secret</td>
+                  <td>Use a specifically authorized Secret environment and required clearance, need-to-know, and access approvals.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Platform</th>
-                <th>IL2</th>
-                <th>IL4</th>
-                <th>IL5</th>
-                <th>IL6/Classified</th>
-                <th>JWICS</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Advana (WDP)</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td>Navy Jupiter</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes (shared stack with WDP)</td>
-              </tr>
-              <tr>
-                <td>Databricks</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes (SaaS)</td>
-                <td>No</td>
-                <td>In progress (expected early 2027)</td>
-              </tr>
-              <tr>
-                <td>Qlik</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Not confirmed</td>
-                <td>No</td>
-                <td>No</td>
-              </tr>
-              <tr>
-                <td>Palantir AIP/Foundry</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes (via Azure Gov Top Secret)</td>
-                <td>Yes (via Azure Gov Top Secret)</td>
-              </tr>
-            </tbody>
-          </table>
+          <p>SIPRNet supports Secret communications. JWICS supports appropriately authorized Top Secret/SCI communications. IL6 is not a blanket Top Secret authorization. Ordinary AWS GovCloud and Azure Government offerings do not become classified environments through a CAC or encryption.</p>
 
-          <p>The classification level of your data determines which platform you can use to process it. This is not a guideline. It is a legal requirement.</p>
+          <h3 id="deployment-checks">Check the actual deployment</h3>
+
+          <p>Last verified: November 23, 2026. This table is a verification guide, not permission to process data.</p>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Public documentation or context</th>
+                  <th>Required program check</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Advana / WDP</td>
+                  <td>DoD enterprise platform undergoing organizational change</td>
+                  <td>Confirm the actual tenant, network, available tools, and system authorization. Do not infer migration completion.</td>
+                </tr>
+                <tr>
+                  <td>Navy Jupiter</td>
+                  <td>DON data environment with program-specific access and governance</td>
+                  <td>Confirm the DON tenant and dataset permissions. Shared tooling does not establish shared authorization.</td>
+                </tr>
+                <tr>
+                  <td>Databricks</td>
+                  <td>AWS GovCloud documentation distinguishes government and DoD IL5 offerings, including the NIPRNet DoD environment</td>
+                  <td>Confirm cloud, region, service boundary, supported features, and system approval. No classified-service forecast is assumed here.</td>
+                </tr>
+                <tr>
+                  <td>Palantir AIP/Foundry</td>
+                  <td>Government deployments and model integrations vary by offering</td>
+                  <td>Confirm the exact deployment, network, model endpoint, and authorized data. A partnership announcement is not an ATO.</td>
+                </tr>
+                <tr>
+                  <td>Qlik</td>
+                  <td>Government cloud and agency-hosted deployments have different boundaries</td>
+                  <td>Check the current offering record and system approval. Do not infer IL5 or High coverage from the brand name.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Sources: <a href="https://docs.databricks.com/aws/en/security/privacy/gov-cloud" target="_blank" rel="noopener">Databricks GovCloud</a>, <a href="https://aws.amazon.com/govcloud-us/faqs/" target="_blank" rel="noopener">AWS GovCloud FAQ</a>, <a href="https://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Global_Common/HelpSites/security-compliance.htm" target="_blank" rel="noopener">Qlik compliance</a>, and <a href="https://www.palantir.com/docs/foundry/model-integration/overview/" target="_blank" rel="noopener">Palantir model integration</a>. Program confirmation remains necessary.</p>
 
           <h3 id="fedramp">FedRAMP: The Civilian Side</h3>
 
-          <p>FedRAMP (Federal Risk and Authorization Management Program) is the civilian equivalent of the DoD IL framework. It has three tiers: Low, Moderate, and High. If you are working on a civilian agency contract or a contract that touches both civilian and defense systems, FedRAMP authorization is what you check first.</p>
+          <p>FedRAMP evaluates cloud service offerings. It is not interchangeable with DoD impact levels and does not replace a customer system authorization. Historical records use Low, Moderate, and High. The <a href="https://www.fedramp.gov/2026/reference/rev5/d/" target="_blank" rel="noopener">FedRAMP 2026 rules</a> use class-based terminology, including Class D for the former High baseline.</p>
 
-          <p>All five platforms covered in this handbook hold FedRAMP Moderate at minimum. Databricks and Palantir hold FedRAMP High. Qlik holds Moderate. Advana and Jupiter operate under DoD-specific ATOs that exist in parallel with FedRAMP.</p>
-
-          <div class="callout callout-warning">
-            <span class="callout-icon" aria-hidden="true">&#9888;</span>
-            <div class="callout-content">
-              <p><strong>Sanity check:</strong> "We can just put this in commercial cloud." You can't. Data with a CUI marking has residency requirements. FedRAMP High or IL4-authorized infrastructure is required. "But it's just a test dataset." If it came from a DoD source system, assume it has restrictions until you confirm otherwise. The penalties for mishandling CUI are not hypothetical.</p>
-            </div>
-          </div>
+          <p>Check the exact current offering and permitted services. Advana and Jupiter are mission systems, not vendor-wide FedRAMP product labels. CUI requirements depend on the data category, agency, contract, and system boundary. Keep unknown data out of a public lab until the data owner confirms handling rules.</p>
 
           <h3 id="zero-trust">Zero Trust and What It Means Day-to-Day</h3>
 
