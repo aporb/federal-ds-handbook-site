@@ -56,7 +56,7 @@ CSS custom properties defined in `:root` of `style.css`:
 Content comes from the handbook repo (`../handbook/`). When updating a chapter page:
 1. Read the corresponding handbook README: `../handbook/chapters/NN-name/README.md`
 2. Update the HTML to reflect content changes
-3. Handbook content is QA-signed-off — do not alter the substance, only the HTML rendering
+3. Mirror sourced corrections from the handbook. Preserve the established layout. Do not introduce independent policy or authorization claims.
 
 ## Common Agent Tasks
 
