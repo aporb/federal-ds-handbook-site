@@ -255,12 +255,12 @@ graph TD
           </div>
 
           <h2 id="air-gapped-models">Transfer Learning in Air-Gapped Environments</h2>
-          <p>At IL5 and above, your training environment has no internet access. <code>pip install transformers</code> and <code>model = ResNet50(weights="IMAGENET1K_V2")</code> will fail. Pre-trained model weights are on HuggingFace Hub and PyTorch Hub — both on the public internet, both inaccessible.</p>
+          <p>Some restricted training environments have no public internet access. IL5 alone does not mean air-gapped or classified. Verify the actual network and approved package-transfer process. In such an environment, <code>pip install transformers</code> and <code>model = ResNet50(weights="IMAGENET1K_V2")</code> will fail. Pre-trained model weights are on HuggingFace Hub and PyTorch Hub — both on the public internet, both inaccessible.</p>
 
           <p>The process for getting pre-trained weights into an air-gapped environment:</p>
           <ol>
             <li><strong>Download on an unclassified system.</strong> Use <code>model.save_pretrained("/path/to/output")</code> for HuggingFace models. This produces <code>config.json</code>, <code>tokenizer.json</code>, and <code>model.safetensors</code>. Compute its SHA-256 hash for chain-of-custody.</li>
-            <li><strong>Package for transfer.</strong> Create a single archive. Complete a DD-1149 (Requisition and Invoice/Shipping Document) or equivalent transfer form.</li>
+            <li><strong>Package for transfer.</strong> Create a single archive. Complete the media-transfer form and approvals your program requires. A DD-1149 alone is not cross-domain authorization.</li>
             <li><strong>Virus scan and media transfer.</strong> Archive goes on approved removable media (hardware write-protected USB). The receiving side's ISSO runs the virus scan before mounting.</li>
             <li><strong>Install in the secure environment.</strong> Load from local path: <code>AutoModel.from_pretrained("/path/to/local/model")</code> for HuggingFace; set <code>TORCH_HOME</code> environment variable for PyTorch Hub.</li>
           </ol>
