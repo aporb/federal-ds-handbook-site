@@ -196,7 +196,7 @@
             <li>RBAC with least privilege</li>
             <li>Audit logging for all data access and model inference</li>
             <li>Model cards required for production ML models</li>
-            <li>Bias audit required before deploying classifiers</li>
+            <li>Bias testing required by the governing program review, with quantitative results</li>
             <li>NIST AI RMF documentation for AI systems</li>
           </ul>
 
@@ -221,7 +221,7 @@
           </div>
 
           <div class="callout callout-note">
-            <p><strong>Severity levels:</strong> Critical = data leaks across classification boundaries or credentials exposed. High = missing encryption, hardcoded credentials, external API calls with government data. Medium = incomplete RBAC, missing model cards. Low = style issues, missing docstring headers.</p>
+            <p><strong>Severity levels:</strong> Critical = data crossing an unauthorized classification boundary or exposed credentials. High = missing encryption, hardcoded credentials, nonpublic data sent to an unapproved endpoint. Medium = incomplete access control, missing model documentation. Low = style issues, missing docstring headers. These are advisory findings, not a certification.</p>
           </div>
 
           <h3 id="generate-federal-code"><code>/generate-federal-code</code></h3>
@@ -247,7 +247,7 @@ Usage: [exactly how to run it]
             <li><strong>Databricks</strong>: SparkSession pre-initialized, no pip install in cells, <code>dbutils.secrets</code> for credentials, Unity Catalog for governance</li>
             <li><strong>Foundry</strong>: <code>palantir_models</code> for model publishing, <code>@transform_df</code> decorators for pipelines, no direct file I/O</li>
             <li><strong>Advana / Navy Jupiter</strong>: JupyterHub on shared cluster, conda environments only, no sudo</li>
-            <li><strong>All platforms at IL4+</strong>: No external API calls, self-hosted models and embeddings only, data stays within classification boundary</li>
+            <li><strong>Approved endpoints only</strong>: no nonpublic data sent to an unapproved endpoint, and no inference or embedding service used without confirming the exact offering, region or network, and system authorization. Self-hosting alone does not authorize a model</li>
           </ul>
 
           <div class="callout callout-warning">

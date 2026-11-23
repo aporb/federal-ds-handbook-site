@@ -147,104 +147,157 @@
         Development Environment
       </div>
       <h1 class="platform-hero-title">Local Docker Stack</h1>
-      <p class="platform-hero-desc">A Docker Compose environment that mirrors federal platform constraints locally. Jupyter, MLflow, PostgreSQL, and CAC/PIV authentication services — the tools you need to run handbook code examples in conditions that approximate real DoD platforms.</p>
+      <p class="platform-hero-desc">A public and synthetic data lab for running handbook examples. It does not reproduce an accredited federal environment. The small learning profile runs one authenticated notebook; a separate opt-in reference stack shows thirteen example services.</p>
       <div class="platform-tags">
         <span class="platform-tag-pill">Docker Compose</span>
-        <span class="platform-tag-pill">IL4/IL5 Simulation</span>
-        <span class="platform-tag-pill">8 Services</span>
+        <span class="platform-tag-pill">Public or synthetic data only</span>
+        <span class="platform-tag-pill">1 lab / 13 reference services</span>
       </div>
     </div>
 
     <!-- UX-018: dl/dt/dd for semantic label-value pairs -->
     <dl class="platform-facts">
-      <div class="platform-fact"><dt class="platform-fact-label">Services</dt><dd class="platform-fact-value">8</dd></div>
-      <div class="platform-fact"><dt class="platform-fact-label">Dockerfiles</dt><dd class="platform-fact-value">8</dd></div>
-      <div class="platform-fact"><dt class="platform-fact-label">Requires</dt><dd class="platform-fact-value">Docker 20.10+</dd></div>
-      <div class="platform-fact"><dt class="platform-fact-label">RAM</dt><dd class="platform-fact-value">8 GB minimum</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Learning lab</dt><dd class="platform-fact-value">1 notebook</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Reference stack</dt><dd class="platform-fact-value">13 opt-in services</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Authentication</dt><dd class="platform-fact-value">Generated token</dd></div>
+      <div class="platform-fact"><dt class="platform-fact-label">Requires</dt><dd class="platform-fact-value">Docker + Compose v2</dd></div>
     </dl>
 
     <div class="chapter-layout">
       <article class="chapter-main">
         <div class="prose" id="prose-content">
 
-          <h2 id="services">Services</h2>
-          <p>The stack ships eight services. Each runs in its own container with a dedicated Dockerfile. Together they approximate the compute, storage, tracking, monitoring, and auth surfaces you encounter on Advana, Databricks, and Navy Jupiter.</p>
-
-          <div class="docker-service-grid">
-
-            <div class="docker-service-card">
-              <div class="service-name">Jupyter</div>
-              <div class="service-desc">JupyterLab notebooks — the primary interface for running chapter code examples and exercises</div>
-              <div class="service-port">Port 8888</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">MLflow</div>
-              <div class="service-desc">Experiment tracking and model registry, backed by PostgreSQL — mirrors the MLflow server on Databricks</div>
-              <div class="service-port">Port 5000</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">PostgreSQL</div>
-              <div class="service-desc">Relational database for data exercises and as the MLflow backend store</div>
-              <div class="service-port">Port 5432</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">Redis</div>
-              <div class="service-desc">In-memory cache and message broker for pipeline and streaming exercises</div>
-              <div class="service-port">Port 6379</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">Nginx</div>
-              <div class="service-desc">Reverse proxy with SSL termination — routes traffic to Jupyter and MLflow, simulates gateway behavior</div>
-              <div class="service-port">Port 80 / 443</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">Prometheus</div>
-              <div class="service-desc">Metrics collection for all running services — used in Chapter 9 (MLOps) monitoring examples</div>
-              <div class="service-port">Port 9090</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">Grafana</div>
-              <div class="service-desc">Monitoring dashboards fed by Prometheus — pre-provisioned with handbook dashboard configs</div>
-              <div class="service-port">Port 3000</div>
-            </div>
-
-            <div class="docker-service-card">
-              <div class="service-name">CAC Auth</div>
-              <div class="service-desc">Smart card authentication simulator — lets you test CAC/PIV auth flows without hardware readers</div>
-              <div class="service-port">Port 8443</div>
-            </div>
-
-          </div>
-
-          <h2 id="quick-start">Quick Start</h2>
-          <p>Three commands get the full stack running. If you only need Jupyter and MLflow for a specific chapter, see <a href="#selective-startup">Selective Startup</a> below.</p>
+          <h2 id="learning-lab">Small learning lab</h2>
+          <p>Start with one container. It uses a digest-pinned Python 3.11 image, hash-locked packages, a non-root user, a read-only root filesystem, and read-only chapter files. Jupyter generates its own login token, and the published host port binds to loopback only.</p>
 
           <div class="code-block-wrapper">
             <div class="code-block-header">
               <span class="code-block-lang">bash</span>
               <button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button>
             </div>
-            <pre><code class="language-bash"># Clone the repository
-git clone https://github.com/aporb/data-science-learning-handbook.git
-cd data-science-learning-handbook
+            <pre><code class="language-bash"># From the handbook repository root
+docker compose -p fdsh-learning -f compose.learning.yml --profile learning up --build -d
 
-# Copy environment template and configure
-cp .env.example .env
+# Read the generated login URL on your own machine
+docker compose -p fdsh-learning -f compose.learning.yml --profile learning logs notebook
 
-# Start all services
-docker compose up -d
-
-# Verify
-docker compose ps</code></pre>
+# Stop it (keeps the notebook volume)
+docker compose -p fdsh-learning -f compose.learning.yml --profile learning down</code></pre>
           </div>
 
-          <p>JupyterLab will be available at <code>http://localhost:8888</code>. MLflow at <code>http://localhost:5000</code>. The first startup pulls images and builds containers — allow 3–5 minutes.</p>
+          <p>Open <code>http://127.0.0.1:8888</code> and use the token from the log. Treat that token as a local credential. Do not disable token authentication, XSRF protection, or same-origin checks. Save your work in the writable <code>notebooks/</code> directory. Adding <code>--volumes</code> to <code>down</code> deletes it.</p>
+
+          <div class="callout callout-warning">
+            <span class="callout-icon" aria-hidden="true">&#9888;</span>
+            <div class="callout-content">
+              <p>Use public or synthetic data only. Do not add agency credentials, operational records, CUI, or classified material. Loopback publication is not an air gap, and this lab is not an IL4, IL5, IL6, CAC, or cross-domain accreditation.</p>
+            </div>
+          </div>
+
+          <h2 id="services">Reference services</h2>
+          <p>The separate legacy stack defines thirteen services under an explicit <code>reference</code> profile. Every published port binds to loopback. This is configuration documentation, not a recommended first run and not a production deployment.</p>
+
+          <div class="docker-service-grid">
+
+            <div class="docker-service-card">
+              <div class="service-name">Jupyter</div>
+              <div class="service-desc">Notebook service. Token authentication stays enabled; do not start it with an empty token</div>
+              <div class="service-port">Port 8888</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">MLflow</div>
+              <div class="service-desc">Experiment tracking and model registry, backed by PostgreSQL</div>
+              <div class="service-port">Port 5000</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">PostgreSQL</div>
+              <div class="service-desc">Relational database for data exercises and the MLflow backend store</div>
+              <div class="service-port">Port 5432</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Redis</div>
+              <div class="service-desc">In-memory cache and message broker for pipeline exercises</div>
+              <div class="service-port">Port 6379</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Nginx</div>
+              <div class="service-desc">Reverse proxy with TLS termination in front of the notebook and tracking services</div>
+              <div class="service-port">Ports 80 / 443</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Prometheus</div>
+              <div class="service-desc">Metrics collection for the monitoring examples</div>
+              <div class="service-port">Port 9090</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Grafana</div>
+              <div class="service-desc">Dashboards fed by Prometheus. Change the default administrator password before use</div>
+              <div class="service-port">Port 3000</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">CAC Auth</div>
+              <div class="service-desc">Smart card authentication simulator. It does not establish a real clearance or identity assurance</div>
+              <div class="service-port">Port 8443</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Consul</div>
+              <div class="service-desc">Service discovery and the Vault storage backend</div>
+              <div class="service-port">Port 8500</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Vault</div>
+              <div class="service-desc">Secret-management example. Requires provisioned TLS material and a trusted CA; certificate verification stays enabled</div>
+              <div class="service-port">Port 8200</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Vault init</div>
+              <div class="service-desc">One-shot bootstrap. Keys and root token stay in protected files and are not printed</div>
+              <div class="service-port">No published port</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Security scanner</div>
+              <div class="service-desc">Container and dependency scanning example</div>
+              <div class="service-port">No published port</div>
+            </div>
+
+            <div class="docker-service-card">
+              <div class="service-name">Docs</div>
+              <div class="service-desc">Static documentation server</div>
+              <div class="service-port">Port 8080</div>
+            </div>
+
+          </div>
+
+          <h2 id="quick-start">Validate without starting</h2>
+          <p>Confirm the reference model parses before running anything. Do not start all services merely to run one chapter example.</p>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span class="code-block-lang">bash</span>
+              <button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code class="language-bash">docker compose --profile reference config --quiet
+
+# Python-only path for the tested learning profile
+python3.11 -m venv .venv
+. .venv/bin/activate
+python -m pip install --require-hashes -r requirements-learning.txt
+python -m pytest tests -q
+python scripts/check_handbook.py</code></pre>
+          </div>
+
+          <p>The learning profile does not install Spark, Foundry libraries, GPU frameworks, or the complete security infrastructure. Examples for those systems need the indicated authorized platform and approved dependencies.</p>
 
           <h2 id="configuration">Configuration</h2>
           <p>Copy <code>.env.example</code> to <code>.env</code> before starting the stack. The file is pre-populated with safe defaults for local development; you only need to change values if you want to connect to live federal platform APIs.</p>
@@ -280,32 +333,12 @@ graph LR
             <p class="mermaid-caption">Service topology. Nginx is the single ingress point. Prometheus scrapes all services; Grafana visualizes the metrics. CAC Auth chains through Nginx for auth-gated request flows.</p>
           </div>
 
-          <h2 id="selective-startup">Selective Startup</h2>
-          <p>The full stack uses 6–8 GB of RAM. If you are working through a specific chapter and don't need monitoring or auth services, start only what that chapter requires.</p>
+          <h2 id="limitations">Limitations</h2>
+              <p>The reference stack still needs dependency, certificate, and configuration review before any service is exposed beyond your machine. A successful container start proves nothing about security, compliance, or authorization. Containers can reach the network, so loopback publication is not an air gap. Do not install this public lock file into a managed government environment.</p>
 
-          <div class="code-block-wrapper">
-            <div class="code-block-header">
-              <span class="code-block-lang">bash</span>
-              <button class="code-copy-btn" type="button" aria-label="Copy code">Copy</button>
-            </div>
-            <pre><code class="language-bash"># Just the essentials for chapter exercises
-docker compose up -d jupyter mlflow postgres
+              <p>For the Vault example, the certificate must cover the <code>vault</code> service hostname, and bootstrap material must stay in protected files. It is not a production bootstrap or recovery design. The CAC service is a simulator, not an authentication authority.</p>
 
-# Add monitoring for Chapter 9 (MLOps)
-docker compose up -d prometheus grafana
-
-# Add auth services for Chapter 12 (Ethics & Governance)
-docker compose up -d cac-auth nginx</code></pre>
-          </div>
-
-          <div class="callout callout-note">
-            <span class="callout-icon" aria-hidden="true">&#8505;</span>
-            <div class="callout-content">
-              <p>MLflow depends on PostgreSQL. If you start MLflow, Docker Compose will automatically start postgres too — you don't need to name it explicitly.</p>
-            </div>
-          </div>
-
-          <h2 id="get-the-full-stack">Get the Full Stack</h2>
+              <h2 id="get-the-full-stack">Get the Full Stack</h2>
           <p>All Dockerfiles, Nginx configs, Prometheus rules, Grafana dashboard provisioning, and the CAC Auth service source are in the <code>docker/</code> directory of the repository.</p>
 
           <a href="https://github.com/aporb/data-science-learning-handbook/tree/main/docker" class="btn-primary" target="_blank" rel="noopener">

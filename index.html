@@ -433,7 +433,7 @@
       <div class="section-header">
         <span class="section-eyebrow">Reference</span>
         <h2 class="section-title" id="platforms-heading">5 Platform Guides</h2>
-        <p class="section-description">Deep-dive reference for each of the five major DoD data science platforms. Architecture, access patterns, key APIs, and production-ready code examples.</p>
+        <p class="section-description">Deep-dive reference for each of the five major DoD data science platforms. Architecture, access patterns, key APIs, and worked code examples.</p>
       </div>
 
       <div class="platform-grid" role="list">
@@ -525,15 +525,15 @@
         <a href="docker.html" class="toolkit-card">
           <div class="toolkit-card-icon">&#128230;</div>
           <div class="toolkit-card-title">Docker Environment</div>
-          <div class="toolkit-card-desc">A local development stack that mirrors federal platform constraints — Jupyter, MLflow, PostgreSQL, CAC/PIV auth, and monitoring services.</div>
-          <div class="toolkit-card-stat">8 services</div>
+          <div class="toolkit-card-desc">A public or synthetic data lab: one authenticated notebook, plus an opt-in reference stack of thirteen example services. Not an accredited environment.</div>
+          <div class="toolkit-card-stat">1 lab &middot; 13 reference services</div>
         </a>
 
         <a href="security.html" class="toolkit-card">
           <div class="toolkit-card-icon">&#128274;</div>
           <div class="toolkit-card-title">Security Reference</div>
-          <div class="toolkit-card-desc">A 309-file DoD security implementation — CAC/PIV authentication, RBAC, multi-classification data handling, and automated compliance documentation.</div>
-          <div class="toolkit-card-stat">249K lines</div>
+          <div class="toolkit-card-desc">Educational security patterns — CAC/PIV authentication, access control, classification handling, and audit logging. Not certified controls or an ATO.</div>
+          <div class="toolkit-card-stat">309 files &middot; not certified</div>
         </a>
 
         <a href="https://github.com/aporb/data-science-learning-handbook/tree/main/chapters" class="toolkit-card" target="_blank" rel="noopener">
@@ -571,7 +571,7 @@
             <div class="agent-command-header">
               <code class="agent-command-name">/compliance-check</code>
             </div>
-            <p class="agent-command-desc">Reviews code against NIST 800-53, DoD AI Ethics, and FedRAMP requirements. Returns severity-classified findings with remediation pointing to specific handbook sections.</p>
+            <p class="agent-command-desc">Gives an advisory review against identified requirements. Returns severity-ranked findings with sources, uncertainty, and remediation. It cannot certify compliance or grant authorization.</p>
             <div class="agent-command-tools">
               <span class="agent-tool-tag">Claude Code</span>
               <span class="agent-tool-tag">OpenCode</span>
